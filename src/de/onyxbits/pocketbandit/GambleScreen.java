@@ -163,7 +163,6 @@ public class GambleScreen extends BureauScreen implements EventListener {
   private Sound ejectCoinSound;
   private Sound reelStopSound;
   
-  
   private static final AssetDescriptor[] ASSETS = {
     new AssetDescriptor<TextureAtlas>("textures/gamblescreen.atlas",TextureAtlas.class),
     new AssetDescriptor<Music>("music/Theme for Harold var 3.mp3",Music.class),
@@ -204,10 +203,21 @@ public class GambleScreen extends BureauScreen implements EventListener {
     TextureAtlas localAtlas =game.assetManager.get("textures/gamblescreen.atlas",TextureAtlas.class);
     TextureAtlas globalAtlas =game.assetManager.get("textures/global.atlas",TextureAtlas.class);
     
+    Drawable up,down,checked; // Reusables for making buttons.
     symbols=new Drawable[variation.symbolNames.length];
     smallSymbols=new Drawable[variation.symbolNames.length];
     Drawable backgroundImage = new NinePatchDrawable(new NinePatch(globalAtlas.findRegion("roundbox_grey"),8,8,8,8));
-    Drawable up,down,checked;
+    
+    // Note: Ideally this would be done in renderBackground() without the use of actors. Unfortunately,
+    // something about the stage being larger than the physical screen seems to mess with the camera
+    TextureRegion background = localAtlas.findRegion("spr_background");
+    for (int x=-12;x<Gdx.graphics.getWidth();x+=background.getRegionWidth()) {
+      for (int y=-12;y<Gdx.graphics.getHeight();y+=background.getRegionHeight()) {
+        Image img = new Image(background);
+        img.setPosition(x,y);
+        stage.addActor(img);
+      }
+    }
     
     for(int i=0;i<symbols.length;i++) {
       symbols[i]=new TextureRegionDrawable(new TextureRegion(localAtlas.findRegion(variation.symbolNames[i])));
