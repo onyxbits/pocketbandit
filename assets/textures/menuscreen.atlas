@@ -1,0 +1,61 @@
+
+menuscreen.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+spr_logo
+  rotate: false
+  xy: 1, 112
+  size: 262, 135
+  orig: 262, 135
+  offset: 0, 0
+  index: -1
+btn_credits_down
+  rotate: false
+  xy: 1, 75
+  size: 127, 35
+  orig: 127, 35
+  offset: 0, 0
+  index: -1
+btn_credits_up
+  rotate: false
+  xy: 265, 212
+  size: 127, 35
+  orig: 127, 35
+  offset: 0, 0
+  index: -1
+btn_play_down
+  rotate: false
+  xy: 1, 38
+  size: 127, 35
+  orig: 127, 35
+  offset: 0, 0
+  index: -1
+btn_play_up
+  rotate: false
+  xy: 130, 75
+  size: 127, 35
+  orig: 127, 35
+  offset: 0, 0
+  index: -1
+btn_settings_down
+  rotate: false
+  xy: 265, 175
+  size: 127, 35
+  orig: 127, 35
+  offset: 0, 0
+  index: -1
+btn_settings_up
+  rotate: false
+  xy: 1, 1
+  size: 127, 35
+  orig: 127, 35
+  offset: 0, 0
+  index: -1
+btn_external
+  rotate: false
+  xy: 394, 231
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

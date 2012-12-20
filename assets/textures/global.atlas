@@ -1,0 +1,40 @@
+
+global.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+checkered
+  rotate: false
+  xy: 1, 63
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+btn_close_down
+  rotate: false
+  xy: 1, 29
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+roundbox_grey
+  rotate: false
+  xy: 1, 1
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+btn_close_up
+  rotate: false
+  xy: 67, 95
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+squarebox_grey
+  rotate: false
+  xy: 101, 101
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1

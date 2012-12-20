@@ -1,0 +1,16 @@
+*.class
+*~
+DEADJOE
+.#*
+*.jar
+*.zip
+*.apk
+bin/
+gen/
+bin/*
+gen/*
+libs/
+libs/*
+compiled/
+compiled/*
+local.properties

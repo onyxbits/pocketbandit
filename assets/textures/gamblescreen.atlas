@@ -1,0 +1,215 @@
+
+gamblescreen.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+spr_frontpanel
+  rotate: false
+  xy: 1, 67
+  size: 284, 414
+  orig: 284, 414
+  offset: 0, 0
+  index: -1
+bar
+  rotate: false
+  xy: 1, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+bell
+  rotate: false
+  xy: 287, 417
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+cherry
+  rotate: false
+  xy: 67, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+grapes
+  rotate: false
+  xy: 287, 351
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+lemon
+  rotate: false
+  xy: 353, 417
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+mellon
+  rotate: false
+  xy: 133, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+orange
+  rotate: false
+  xy: 287, 285
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+plum
+  rotate: false
+  xy: 353, 351
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+seven
+  rotate: false
+  xy: 419, 417
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+spr_knob
+  rotate: false
+  xy: 199, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+btn_bet_checked
+  rotate: false
+  xy: 287, 235
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+btn_bet_down
+  rotate: false
+  xy: 353, 301
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+btn_bet_up
+  rotate: false
+  xy: 419, 367
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+btn_left_down
+  rotate: false
+  xy: 287, 201
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_left_up
+  rotate: false
+  xy: 287, 167
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_musicmuted_checked
+  rotate: false
+  xy: 287, 133
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_musicmuted_down
+  rotate: false
+  xy: 287, 99
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_musicmuted_up
+  rotate: false
+  xy: 287, 65
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_right_down
+  rotate: false
+  xy: 337, 251
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_right_up
+  rotate: false
+  xy: 403, 317
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_soundmuted_checked
+  rotate: false
+  xy: 469, 383
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_soundmuted_down
+  rotate: false
+  xy: 321, 201
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_soundmuted_up
+  rotate: false
+  xy: 321, 167
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_view_checked
+  rotate: false
+  xy: 321, 133
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_view_down
+  rotate: false
+  xy: 321, 99
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+btn_view_up
+  rotate: false
+  xy: 321, 65
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+spr_cash
+  rotate: false
+  xy: 371, 267
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+spr_feedbackcoins
+  rotate: false
+  xy: 437, 333
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+spr_turns
+  rotate: false
+  xy: 371, 233
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1

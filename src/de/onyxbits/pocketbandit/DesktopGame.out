@@ -1,0 +1,12 @@
+package de.onyxbits.pocketbandit;
+
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+
+public class DesktopGame {
+  public static void main (String[] args) {
+    //new LwjglApplication(new SlotMachine(), "Game", 800,1280, false);
+    //new LwjglApplication(new SlotMachine(), "Game", 480,800, false);
+    new LwjglApplication(new SlotMachine(), "Game", 320,480, false);
+    
+  }
+}
