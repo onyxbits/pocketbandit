@@ -127,11 +127,15 @@ public class MenuScreen extends BureauScreen implements EventListener {
     
     content.setSkin(((SlotMachine)game).skin);
     content.align(Align.left);
-    content.add("Programming").left();
+    content.add("Code").left();
     content.row();
     content.add();
     content.add("Patrick Ahlbrecht").left();
     content.add(linkHandler.register(new ImageButton(up),"http://www.onyxbits.de"));
+    content.row();
+    content.add();
+    content.add("LibGDX Project").left();
+    content.add(linkHandler.register(new ImageButton(up),"http://libgdx.badlogicgames.com/"));
     content.row();
     content.add("Graphics").left();
     content.row();
