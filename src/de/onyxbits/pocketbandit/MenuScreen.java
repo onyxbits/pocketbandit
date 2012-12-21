@@ -133,7 +133,7 @@ public class MenuScreen extends BureauScreen implements EventListener {
     content.row();
     content.add();
     content.add("Patrick Ahlbrecht").left();
-    content.add(linkHandler.register(new ImageButton(up),"http://www.onyxbits.de"));
+    content.add(linkHandler.register(new ImageButton(up),"http://www.onyxbits.de/pocketbandit/"));
     content.row();
     content.add();
     content.add("LibGDX Project").left();
