@@ -158,6 +158,8 @@ public class GambleScreen extends BureauScreen implements EventListener {
    */
   protected static final int REELSTOPSOUND=3;
   
+  private FadeOverScreen fadeOverScreen;
+  
   private Sound triggerSound;
   private Sound winSound;
   private Sound ejectCoinSound;
@@ -191,6 +193,7 @@ public class GambleScreen extends BureauScreen implements EventListener {
   
   public void readyScreen() {
     this.stage = new Stage(320, 480, true,game.spriteBatch);
+    fadeOverScreen = new FadeOverScreen();
     deviceGroup.setTransform(false);
     
     triggerSound=game.assetManager.get("sfx/Pellet Gun Pump-SoundBible.com-517750307.mp3",Sound.class);
@@ -460,8 +463,8 @@ public class GambleScreen extends BureauScreen implements EventListener {
     } 
     
     if (isOver && actor==exit && input.getType().equals(InputEvent.Type.touchUp)) {
-      SlotMachine.fadeOverScreen.configure(game,this,new MenuScreen(game),1);
-      game.setScreen(SlotMachine.fadeOverScreen);
+      fadeOverScreen.configure(game,this,new MenuScreen(game),1);
+      game.setScreen(fadeOverScreen);
     }
     
     if (isOver && actor==musicStatus && input.getType().equals(InputEvent.Type.touchUp)) {

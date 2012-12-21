@@ -18,11 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.*;
 public class SlotMachine extends BureauGame {
   
   /**
-   * Reuseable instance
-   */
-  public static final FadeOverScreen fadeOverScreen = new FadeOverScreen();
-  
-  /**
    * The name to use for <code>Gdx.app.getPreferences</code>
    */
   public static final String PREFSNAME = "PocketBandit";
@@ -89,7 +84,6 @@ public class SlotMachine extends BureauGame {
   
   @Override
   public void dispose() {
-    fadeOverScreen.dispose();
     skin.dispose();
     super.dispose();
   }

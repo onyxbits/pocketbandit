@@ -32,6 +32,7 @@ public class MenuScreen extends BureauScreen implements EventListener {
   private TextureAtlas globalAtlas;
   private int offset=-64;
   private int scale=0;
+  private FadeOverScreen fadeOverScreen;
   
   private static final AssetDescriptor[] ASSETS = {
     new AssetDescriptor<Music>("music/Pinball Spring.mp3",Music.class), 
@@ -48,6 +49,7 @@ public class MenuScreen extends BureauScreen implements EventListener {
   
   public void readyScreen() {
     this.stage = new Stage(320, 480, true,game.spriteBatch);
+    fadeOverScreen = new FadeOverScreen();
     
     Table layout = new Table();
     layout.setBounds(0,0,stage.getWidth(),stage.getHeight());
@@ -100,8 +102,8 @@ public class MenuScreen extends BureauScreen implements EventListener {
     if (isOver && actor==startGame && input.getType().equals(InputEvent.Type.touchUp)) {
       Variation v = Variation.loadDefaultVariation();
       Player p = new Player(v,v.seedCapital);   
-      SlotMachine.fadeOverScreen.configure(game,this,new GambleScreen(game,p,v),1);
-      game.setScreen(SlotMachine.fadeOverScreen);
+      fadeOverScreen.configure(game,this,new GambleScreen(game,p,v),1);
+      game.setScreen(fadeOverScreen);
     }
     
     if (isOver && actor==showCredits && input.getType().equals(InputEvent.Type.touchUp)) {
@@ -110,8 +112,8 @@ public class MenuScreen extends BureauScreen implements EventListener {
     
     if (isOver && actor==settings && input.getType().equals(InputEvent.Type.touchUp)) {
       Variation v = Variation.loadDefaultVariation();
-      SlotMachine.fadeOverScreen.configure(game,this,new GambleScreen(game,null,v),1);
-      game.setScreen(SlotMachine.fadeOverScreen);
+      fadeOverScreen.configure(game,this,new GambleScreen(game,null,v),1);
+      game.setScreen(fadeOverScreen);
     }
     
     return true;
