@@ -48,7 +48,6 @@ public class SlotMachine extends BureauGame {
     
     ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
     scrollPaneStyle.background = new NinePatchDrawable(new NinePatch(globalAtlas.findRegion("roundbox_grey"),8,8,8,8));
-    //scrollPaneStyle.vScrollKnob = new NinePatchDrawable(new NinePatch(globalAtlas.findRegion("squarebox_grey"),8,8,8,8));
     skin.add("default",scrollPaneStyle);
     
     // NOTE: -Dvariant=<file> to fastboot to a GambleScreen - for debugging
@@ -75,7 +74,6 @@ public class SlotMachine extends BureauGame {
       return new MenuScreen(this);
     }
     else {
-      //Variation v = new Variation(Integer.parseInt(variant),symbolSequence);
       Variation v =  Variation.loadVariation(Gdx.files.internal(variant));
       Player p = new Player(v,10);
       return new GambleScreen(this,p,v);

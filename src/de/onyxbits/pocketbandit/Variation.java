@@ -7,24 +7,21 @@ import com.badlogic.gdx.Preferences;
 import java.util.Arrays;
 
 /**
- * Constants that describe symbols, probabilities and payouts.
+ * Constants that describe symbols, probabilities and payouts. All public fields
+ * are to be considered final (they were originally, but then rule definitions moved
+ * from code to JSON).
  */
 public class Variation {
 
   /**
    * Name (and order) of the symbol textures
    */
-  public  String symbolNames[];
+  public String symbolNames[];
   
   /**
    * Human readable name of the machine
    */
   public String machineName;
-  
-  /**
-   * Name of the atlas file that contains the graphics.
-   */
-  public String atlasName = "textures/machineparts.atlas";
   
   /**
    * Symbol distribution. This is a [3][x] array that gives the odds for each symbol
@@ -50,7 +47,7 @@ public class Variation {
   public int seedCapital=0;
   
   /**
-   * For debugging: not so random random picks
+   * For debugging only : not so random random picks
    */
   private int[] symbolSequence;
   
@@ -65,34 +62,6 @@ public class Variation {
   private static final String KEYNAME = "rulefile";
   
   public Variation() {}
-  
-  /**
-   * Helper function for expanding a compact weight table into a real one (Not used in
-   * the actual game, just for creating new rulesets).
-   * @param compact the compact weight table of one reel. This must align with <code>symbolNames</code>.
-   * Each element is the amount of the according symbol on the reel.
-   * @return the expanded weight table
-   */
-  private static int[] toWeightTable(int... compact) {
-    int len = compact.length;
-    int sum=0;
-    for (int i=0;i<len;i++) {
-      sum+=compact[i];
-    }
-    
-    int[] ret= new int[sum];
-    int pos=0;
-    
-    for (int i=0;i<len;i++) {
-      int tmp=compact[i];
-      while(tmp>0) {
-        ret[pos]=i;
-        pos++;
-        tmp--;
-      }
-    }
-    return ret;
-  }
   
   /**
    * Match a payline against the <code>paytable</code>.
@@ -180,6 +149,8 @@ public class Variation {
     for (int i=0;i<fh.length;i++) {
       ret[i]=fh[i].path();
     }
+    // FIXME: Filenames can be totally different from machinenames. All this
+    // sorting does is to make sure that the same order is maintained
     Arrays.sort(ret);
     return ret;
   }
