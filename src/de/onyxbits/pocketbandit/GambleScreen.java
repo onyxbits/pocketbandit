@@ -398,6 +398,9 @@ public class GambleScreen extends BureauScreen implements EventListener {
       paytable.add(" = "+variant.paytable[x][3]+" coins").padLeft(10).padRight(10);
       paytable.row();
     }
+    paytable.add("_____________________").colspan(5).center();
+    paytable.row();
+    paytable.add("Seed capital: "+variant.seedCapital+" coins").colspan(5).center();
     paytable.pack();
     this.variation= variant;
     scrollTable.setWidget(paytable);
