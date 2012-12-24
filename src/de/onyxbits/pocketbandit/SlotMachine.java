@@ -75,7 +75,7 @@ public class SlotMachine extends BureauGame {
     }
     else {
       Variation v =  Variation.loadVariation(Gdx.files.internal(variant));
-      Player p = new Player(v,10);
+      Player p = new Player(v);
       return new GambleScreen(this,p,v);
     }
   }

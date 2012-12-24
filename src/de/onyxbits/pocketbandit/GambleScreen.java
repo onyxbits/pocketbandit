@@ -398,9 +398,23 @@ public class GambleScreen extends BureauScreen implements EventListener {
       paytable.add(" = "+variant.paytable[x][3]+" coins").padLeft(10).padRight(10);
       paytable.row();
     }
-    paytable.add("_____________________").colspan(5).center();
-    paytable.row();
-    paytable.add("Seed capital: "+variant.seedCapital+" coins").colspan(5).center();
+    
+    // Only show extra information on the setup screen, as the paytable visual is not desgined
+    // to keep in sync with dynamically updated information
+    if (player==null) {
+      paytable.add("_____________________").colspan(5).center();
+      paytable.row();
+      paytable.add("Seed capital").colspan(4).left();
+      paytable.add(variant.seedCapital+" coins").padLeft(10).padRight(10);
+      paytable.row();
+      paytable.add("Highscore").colspan(4).left();
+      Player tmp = new Player(variant);
+      paytable.add(tmp.highscore+" coins").padLeft(10).padRight(10);
+      paytable.row();
+      paytable.add("On hand").colspan(4).left();
+      paytable.add(tmp.credit+" coins").padLeft(10).padRight(10);
+    }
+    
     paytable.pack();
     this.variation= variant;
     scrollTable.setWidget(paytable);
@@ -466,6 +480,9 @@ public class GambleScreen extends BureauScreen implements EventListener {
     } 
     
     if (isOver && actor==exit && input.getType().equals(InputEvent.Type.touchUp)) {
+      // NOTE: persisting should probably be done transparently in Player.win() ans Player.loose(),
+      // but im not compfortable with writing often on flash memory.
+      if (player!=null) player.persist();
       fadeOverScreen.configure(game,this,new MenuScreen(game),1);
       game.setScreen(fadeOverScreen);
     }

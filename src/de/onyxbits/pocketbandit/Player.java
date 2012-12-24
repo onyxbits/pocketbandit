@@ -1,5 +1,8 @@
 package de.onyxbits.pocketbandit;
 
+import com.badlogic.gdx.*;
+
+
 /**
  * Game state. Note: global variables are protected for performance sake. 
  * They should not be modified externally.
@@ -15,6 +18,11 @@ public class Player {
    * How much money does the player currently have on hand?
    */
   protected int credit;
+  
+  /**
+   * All time highscore for the currently played variation
+   */
+  protected int highscore;
   
   /**
    * Number of coins the player is currently betting.
@@ -46,14 +54,44 @@ public class Player {
    */
   protected int[] payline = new int[3];
   
+  private Preferences prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
+  
   /**
    * Construct a new game state
    * @param variation rules to use
    * @param credit Cash on hand
    */
-  public Player(Variation variation, int credit) {
+  public Player(Variation variation) {
+    if (variation==null) throw new NullPointerException(); // Crash early
     this.variation = variation;
-    this.credit=credit;
+    // We start out with either the seed capital or the previous winnings. Whichever is higher
+    credit=Math.max(variation.seedCapital,prefs.getInteger(toKey(true),0));
+    highscore=prefs.getInteger(toKey(false),credit);
+  }
+  
+  /**
+   * Transform a varition name into a key name (for persisting credits and highscore)
+   * @param ch true to get the key for saving cretis, false to get the key for highscores.
+   * @return the variation's name in lowercase and with underscores replacing spaces and a suffix
+   * accoring to ch.
+   */
+  private String toKey(boolean ch) {
+    if (ch) {
+      return variation.machineName.replace(" ","_").toLowerCase()+".credits";
+    }
+    else {
+      return variation.machineName.replace(" ","_").toLowerCase()+".highscore";
+      
+    }
+  }
+  
+  /**
+   * Persist credits and highscore for the current variation
+   */
+  public void persist() {
+    prefs.putInteger(toKey(true),credit);
+    prefs.putInteger(toKey(false),highscore);
+    prefs.flush();
   }
   
   /**
@@ -91,6 +129,7 @@ public class Player {
     credit+=prize;
     streakOfBadLuck=0;
     streakOfLuck++;
+    if (credit>highscore) highscore=credit;
   }
   
 }

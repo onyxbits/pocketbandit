@@ -101,7 +101,7 @@ public class MenuScreen extends BureauScreen implements EventListener {
     
     if (isOver && actor==startGame && input.getType().equals(InputEvent.Type.touchUp)) {
       Variation v = Variation.loadDefaultVariation();
-      Player p = new Player(v,v.seedCapital);   
+      Player p = new Player(v);   
       fadeOverScreen.configure(game,this,new GambleScreen(game,p,v),1);
       game.setScreen(fadeOverScreen);
     }
