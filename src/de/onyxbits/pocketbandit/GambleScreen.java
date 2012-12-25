@@ -402,17 +402,17 @@ public class GambleScreen extends BureauScreen implements EventListener {
     // Only show extra information on the setup screen, as the paytable visual is not desgined
     // to keep in sync with dynamically updated information
     if (player==null) {
+      Player tmp = new Player(variant);
       paytable.add("_____________________").colspan(5).center();
       paytable.row();
       paytable.add("Seed capital").colspan(4).left();
       paytable.add(variant.seedCapital+" coins").padLeft(10).padRight(10);
       paytable.row();
-      paytable.add("Highscore").colspan(4).left();
-      Player tmp = new Player(variant);
-      paytable.add(tmp.highscore+" coins").padLeft(10).padRight(10);
-      paytable.row();
       paytable.add("On hand").colspan(4).left();
       paytable.add(tmp.credit+" coins").padLeft(10).padRight(10);
+      paytable.row();
+      paytable.add("Highscore").colspan(4).left();
+      paytable.add(tmp.highscore+" coins").padLeft(10).padRight(10);
     }
     
     paytable.pack();
