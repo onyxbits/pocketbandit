@@ -343,6 +343,7 @@ public class GambleScreen extends BureauScreen implements EventListener {
     down = new TextureRegionDrawable(localAtlas.findRegion("btn_soundmuted_down"));
     checked = new TextureRegionDrawable(localAtlas.findRegion("btn_soundmuted_checked"));
     soundStatus = new ImageButton(up,down,checked);
+    soundStatus.setChecked(game.muteManager.isSoundMuted());
     soundStatus.addListener(this);   
     
     up = new TextureRegionDrawable(globalAtlas.findRegion("btn_close_up"));
