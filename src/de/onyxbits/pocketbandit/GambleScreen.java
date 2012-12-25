@@ -506,7 +506,7 @@ public class GambleScreen extends BureauScreen implements EventListener {
     }
     
     if (isOver && actor==previousVariation && input.getType().equals(InputEvent.Type.touchUp)) {
-      setVariant(Variation.loadNextVariation());
+      setVariant(Variation.loadPreviousVariation());
     }
     
     return true;
