@@ -171,15 +171,9 @@ public class Variation {
    */
   public static Variation loadDefaultVariation() {
     String[] rules = listVariations();
-    try {
-      return loadVariation(Gdx.files.internal(Gdx.app.getPreferences(SlotMachine.PREFSNAME).getString(KEYNAME,rules[0])));
-    }
-    catch (Exception e) {
-      // FIXME: Dirty hack! Rules may be removed or renamed between version, making the filename in storage
-      // invalid and causing the game to crash. We should really do a bit more robust error handling here.
-      Gdx.app.getPreferences(SlotMachine.PREFSNAME).remove(KEYNAME);
-      return loadVariation(Gdx.files.internal(rules[0]));
-    }
+    Preferences prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
+    checkPrefsValid(prefs);
+    return loadVariation(Gdx.files.internal(prefs.getString(KEYNAME,rules[0])));
   }
   
   /**
@@ -189,6 +183,7 @@ public class Variation {
   public static Variation loadNextVariation() {
     String[] rules = listVariations();
     Preferences prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
+    checkPrefsValid(prefs);
     String current = prefs.getString(KEYNAME,rules[0]);
     for (int i=0;i<rules.length;i++) {
       if (rules[i].equals(current)) {
@@ -209,6 +204,7 @@ public class Variation {
   public static Variation loadPreviousVariation() {
     String[] rules = listVariations();
     Preferences prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
+    checkPrefsValid(prefs);
     String current = prefs.getString(KEYNAME,rules[0]);
     for (int i=0;i<rules.length;i++) {
       if (rules[i].equals(current)) {
@@ -220,5 +216,23 @@ public class Variation {
       }
     }
     return loadDefaultVariation();
+  }
+  
+  /**
+   * Dirty hack: between versions, rule files may be removed or renamed ->
+   * check if the configured rule still exists and if not, reset it. We should
+   * do more robust sanity checking here.
+   */
+  private static void checkPrefsValid(Preferences prefs) {
+    String name = prefs.getString(KEYNAME,null);
+    if (name==null) {
+      // Nothing configured, yet -> OK
+      return;
+    }
+    if (!Gdx.files.internal(name).exists()) {
+      // Gotcha! Nuke whatever is in there
+      prefs.remove(KEYNAME);
+      prefs.flush();
+    }
   }
 }
