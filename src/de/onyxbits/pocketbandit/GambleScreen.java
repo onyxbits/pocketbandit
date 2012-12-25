@@ -394,8 +394,8 @@ public class GambleScreen extends BureauScreen implements EventListener {
           paytable.add(actor).pad(2,2,8,2);
         }
       }
-      paytable.add();
-      paytable.add(" = "+variant.paytable[x][3]+" coins").padLeft(10).padRight(10);
+      paytable.add(" = ");
+      paytable.add(variant.paytable[x][3]+" coins").right();
       paytable.row();
     }
     
@@ -403,16 +403,16 @@ public class GambleScreen extends BureauScreen implements EventListener {
     // to keep in sync with dynamically updated information
     if (player==null) {
       Player tmp = new Player(variant);
-      paytable.add("_____________________").colspan(5).center();
+      paytable.add("- - - - - - - - - - - - - - - - -").colspan(5).center();
       paytable.row();
       paytable.add("Seed capital").colspan(4).left();
-      paytable.add(variant.seedCapital+" coins").padLeft(10).padRight(10);
+      paytable.add(variant.seedCapital+" coins").right();
       paytable.row();
       paytable.add("On hand").colspan(4).left();
-      paytable.add(tmp.credit+" coins").padLeft(10).padRight(10);
+      paytable.add(tmp.credit+" coins").right();
       paytable.row();
       paytable.add("Highscore").colspan(4).left();
-      paytable.add(tmp.highscore+" coins").padLeft(10).padRight(10);
+      paytable.add(tmp.highscore+" coins").right();
     }
     
     paytable.pack();
