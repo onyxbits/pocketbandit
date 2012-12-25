@@ -18,3 +18,100 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-optimizationpasses 5
+
+-dontusemixedcaseclassnames
+
+-dontskipnonpubliclibraryclasses
+
+-dontpreverify
+
+-verbose
+
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+
+ 
+
+-renamesourcefileattribute SourceFile
+
+-keepattributes SourceFile,LineNumberTable
+
+ 
+
+# http://stackoverflow.com/questions/4525661/android-proguard-cant-find-dynamically-referenced-class-javax-swing
+
+-dontwarn java.awt.**
+
+-dontnote java.awt.**
+
+-dontwarn com.badlogic.gdx.jnigen.**
+
+ 
+
+-keep public class * extends android.app.Activity
+
+-keep public class * extends android.app.Application
+
+-keep public class * extends android.app.Service
+
+-keep public class * extends android.content.BroadcastReceiver
+
+-keep public class * extends android.content.ContentProvider
+
+-keep public class * extends android.app.backup.BackupAgentHelper
+
+-keep public class * extends android.preference.Preference
+
+-keep public class com.android.vending.licensing.ILicensingService
+
+# Only interested in throwing out unused library stuff
+-keepclassmembers public class de.onyxbits.pocketbandit.** { *; }
+
+-keepclasseswithmembernames class * {
+
+native <methods>;
+
+}
+
+ 
+
+-keepclasseswithmembers class * {
+
+public <init>(android.content.Context, android.util.AttributeSet);
+
+}
+
+ 
+
+-keepclasseswithmembers class * {
+
+public <init>(android.content.Context, android.util.AttributeSet, int);
+
+}
+
+ 
+
+-keepclassmembers class * extends android.app.Activity {
+
+public void *(android.view.View);
+
+}
+
+ 
+
+-keepclassmembers enum * {
+
+public static **[] values();
+
+public static ** valueOf(java.lang.String);
+
+}
+
+ 
+
+-keep class * implements android.os.Parcelable {
+
+public static final android.os.Parcelable$Creator *;
+
+}
