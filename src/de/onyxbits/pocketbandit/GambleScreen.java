@@ -396,7 +396,12 @@ public class GambleScreen extends BureauScreen implements EventListener {
         }
       }
       paytable.add(" = ");
-      paytable.add(variant.paytable[x][3]+" coins").right();
+      if (variant.paytable[x][3]==1) {
+        paytable.add(variant.paytable[x][3]+" coin ").right();
+      }
+      else {
+        paytable.add(variant.paytable[x][3]+" coins").right();
+      }
       paytable.row();
     }
     
