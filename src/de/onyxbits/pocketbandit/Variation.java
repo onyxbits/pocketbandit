@@ -61,7 +61,8 @@ public class Variation {
    */
   private static final String KEYNAME = "rulefile";
   
-  public Variation() {}
+  public Variation(){}
+  
   
   /**
    * Match a payline against the <code>paytable</code>.
@@ -170,7 +171,15 @@ public class Variation {
    */
   public static Variation loadDefaultVariation() {
     String[] rules = listVariations();
-    return loadVariation(Gdx.files.internal(Gdx.app.getPreferences(SlotMachine.PREFSNAME).getString(KEYNAME,rules[0])));
+    try {
+      return loadVariation(Gdx.files.internal(Gdx.app.getPreferences(SlotMachine.PREFSNAME).getString(KEYNAME,rules[0])));
+    }
+    catch (Exception e) {
+      // FIXME: Dirty hack! Rules may be removed or renamed between version, making the filename in storage
+      // invalid and causing the game to crash. We should really do a bit more robust error handling here.
+      Gdx.app.getPreferences(SlotMachine.PREFSNAME).remove(KEYNAME);
+      return loadVariation(Gdx.files.internal(rules[0]));
+    }
   }
   
   /**
