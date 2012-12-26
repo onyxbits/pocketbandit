@@ -77,10 +77,10 @@ public class Player {
    */
   private String toKey(boolean ch) {
     if (ch) {
-      return variation.machineName.replace(" ","_").toLowerCase()+".credits";
+      return "variation."+variation.machineName.replace(" ","_").toLowerCase()+".credits";
     }
     else {
-      return variation.machineName.replace(" ","_").toLowerCase()+".highscore";
+      return "variation."+variation.machineName.replace(" ","_").toLowerCase()+".highscore";
       
     }
   }
