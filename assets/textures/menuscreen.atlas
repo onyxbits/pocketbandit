@@ -52,9 +52,51 @@ btn_settings_up
   orig: 127, 35
   offset: 0, 0
   index: -1
+btn_later_down
+  rotate: false
+  xy: 394, 229
+  size: 64, 18
+  orig: 64, 18
+  offset: 0, 0
+  index: -1
+btn_later_up
+  rotate: false
+  xy: 130, 55
+  size: 64, 18
+  orig: 64, 18
+  offset: 0, 0
+  index: -1
+btn_noway_down
+  rotate: false
+  xy: 265, 155
+  size: 64, 18
+  orig: 64, 18
+  offset: 0, 0
+  index: -1
+btn_noway_up
+  rotate: false
+  xy: 394, 209
+  size: 64, 18
+  orig: 64, 18
+  offset: 0, 0
+  index: -1
+btn_sure_down
+  rotate: false
+  xy: 130, 35
+  size: 64, 18
+  orig: 64, 18
+  offset: 0, 0
+  index: -1
+btn_sure_up
+  rotate: false
+  xy: 265, 135
+  size: 64, 18
+  orig: 64, 18
+  offset: 0, 0
+  index: -1
 btn_external
   rotate: false
-  xy: 394, 231
+  xy: 460, 231
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

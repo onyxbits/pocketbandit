@@ -17,6 +17,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 import de.onyxbits.bureauengine.screen.*;
 import de.onyxbits.bureauengine.*;
+import de.onyxbits.bureauengine.util.*;
+
 
 
 /**
@@ -27,12 +29,21 @@ public class MenuScreen extends BureauScreen implements EventListener {
   private Button startGame;
   private Button showCredits;
   private Button settings;
+  
+  private Button trialYes;
+  private Button trialNo;
+  private Button trialLater;
+  
+  private LinkHandler linkHandler;
+  
   private TextureRegion background;
   private TextureAtlas localAtlas;
   private TextureAtlas globalAtlas;
   private int offset=-64;
   private int scale=0;
   private FadeOverScreen fadeOverScreen;
+  
+  private SlotMachine slotGame; // Alias for BuereauScreen.game with proper type.
   
   private static final AssetDescriptor[] ASSETS = {
     new AssetDescriptor<Music>("music/Pinball Spring.mp3",Music.class), 
@@ -50,6 +61,8 @@ public class MenuScreen extends BureauScreen implements EventListener {
   public void readyScreen() {
     this.stage = new Stage(320, 480, true,game.spriteBatch);
     fadeOverScreen = new FadeOverScreen();
+    linkHandler=new LinkHandler();
+    slotGame = (SlotMachine)game;
     
     Table layout = new Table();
     layout.setBounds(0,0,stage.getWidth(),stage.getHeight());
@@ -82,7 +95,12 @@ public class MenuScreen extends BureauScreen implements EventListener {
     layout.add().pad(40); // Just to push it up a little
     
     layout.layout();
+    
     stage.addActor(layout);
+    if (slotGame.trialPeriod!=null && slotGame.trialPeriod.getState()==TrialPeriod.INPROGRESS && 
+    slotGame.trialPeriod.isOver()) {
+      buildFeedbackDialog().show(stage);
+    }
     showCredits.addListener(this);
     startGame.addListener(this);
     settings.addListener(this);
@@ -116,7 +134,44 @@ public class MenuScreen extends BureauScreen implements EventListener {
       game.setScreen(fadeOverScreen);
     }
     
+    if (isOver && actor==trialLater && input.getType().equals(InputEvent.Type.touchUp)) {
+      // We just wipe all the data from the trial -> The extension is granted by completely
+      // restarting the trial.
+      slotGame.trialPeriod.reset();
+    }
+    
+    if (isOver && (actor==trialNo || actor==trialYes) && input.getType().equals(InputEvent.Type.touchUp)) {
+      // We don't really care how the user decided. It's sufficient to jot down that the 
+      // decission is final.
+      slotGame.trialPeriod.setState(TrialPeriod.ENDED);
+    }
+    
     return true;
+  }
+  
+  private Dialog buildFeedbackDialog() {
+    Dialog ret = new Dialog("", ((SlotMachine)game).skin);
+    // FIXME: word wrapping seems to be broken in Label s (either that or I can't figure out
+    // how to do it properly). So for the time being: use \n
+    ret.getContentTable().add("Hi,\nseems like you are enjoying this game.\nWould you like to help encourage\nfurther development? You only need\nto rate or review the app on the play\nstore for this.");
+    Drawable up, down;
+    up = new TextureRegionDrawable(localAtlas.findRegion("btn_sure_up"));
+    down = new TextureRegionDrawable(localAtlas.findRegion("btn_sure_down"));
+    trialYes = new ImageButton(up,down);
+    up = new TextureRegionDrawable(localAtlas.findRegion("btn_noway_up")); 
+    down = new TextureRegionDrawable(localAtlas.findRegion("btn_noway_down"));
+    trialNo = new ImageButton(up,down);
+    up = new TextureRegionDrawable(localAtlas.findRegion("btn_later_up"));
+    down = new TextureRegionDrawable(localAtlas.findRegion("btn_later_down"));
+    trialLater = new ImageButton(up,down);
+    linkHandler.register(trialYes,"market://details?id=de.onyxbits.pocketbandit");
+    trialYes.addListener(this);
+    trialNo.addListener(this);
+    trialLater.addListener(this);
+    ret.getButtonTable().add(trialYes);
+    ret.getButtonTable().add(trialNo);
+    ret.getButtonTable().add(trialLater);
+    return ret;
   }
   
   private Dialog buildCreditsDialog() {
@@ -125,7 +180,7 @@ public class MenuScreen extends BureauScreen implements EventListener {
     Drawable up, down;
     up = new TextureRegionDrawable(localAtlas.findRegion("btn_external"));
     ImageButton linkButton;
-    LinkHandler linkHandler = new LinkHandler();
+    
     
     content.setSkin(((SlotMachine)game).skin);
     content.align(Align.left);

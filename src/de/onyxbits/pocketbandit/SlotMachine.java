@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.*;
 
 import de.onyxbits.bureauengine.*;
+import de.onyxbits.bureauengine.util.*;
 import de.onyxbits.bureauengine.audio.*;
 import de.onyxbits.bureauengine.screen.*;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
@@ -23,6 +24,7 @@ public class SlotMachine extends BureauGame {
   public static final String PREFSNAME = "PocketBandit";
   
   public Skin skin;
+  public TrialPeriod trialPeriod;
   
   protected MuteManager createMuteManager() {
     MuteManager ret = new MuteManager();
@@ -31,6 +33,18 @@ public class SlotMachine extends BureauGame {
   }
   
   protected BureauScreen createStartUpScreen() {
+    if (Gdx.files.internal("playstore.txt").exists()) {
+      trialPeriod = new TrialPeriod(Gdx.app.getPreferences(PREFSNAME),"trial.count","trial.first","trial.state");
+      if (trialPeriod.getState()==TrialPeriod.UNKNOWN) {
+        // First launch -> set the trial active
+        trialPeriod.setState(TrialPeriod.INPROGRESS);
+      }
+      if ( (trialPeriod.getState() & TrialPeriod.ENDED) != TrialPeriod.ENDED) {
+        // We only count when the period is not over.
+        trialPeriod.trialed(); 
+      }
+    }
+    
     assetManager.load("textures/global.atlas",TextureAtlas.class);
     assetManager.finishLoading();
     TextureAtlas globalAtlas= assetManager.get("textures/global.atlas",TextureAtlas.class);

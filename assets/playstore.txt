@@ -1,0 +1,2 @@
+Remove this file if not building an APK for Google Play. This will surpress
+the "remind to rate" dialog on the menuscreen.
