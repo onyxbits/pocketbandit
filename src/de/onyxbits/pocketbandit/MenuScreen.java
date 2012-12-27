@@ -149,7 +149,7 @@ public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implement
     Dialog ret = new Dialog("", ((SlotMachine)game).skin);
     // FIXME: word wrapping seems to be broken in Label s (either that or I can't figure out
     // how to do it properly). So for the time being: use \n
-    ret.getContentTable().add("Hi,\nseems like you are enjoying this game.\nWould you like to help encourage\nfurther development? You only need\nto rate or review the app on the play\nstore for this.");
+    ret.getContentTable().add("Hi,\nseems like you are enjoying this game.\nWould you like to help encourage\nfurther development? All you have to\ndo is to rate or review Pocket Bandit\non Google Play.");
     Drawable up, down;
     up = new TextureRegionDrawable(localAtlas.findRegion("btn_sure_up"));
     down = new TextureRegionDrawable(localAtlas.findRegion("btn_sure_down"));
