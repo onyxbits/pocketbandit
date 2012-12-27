@@ -20,7 +20,7 @@ import de.onyxbits.bureauengine.screen.*;
 /**
  * Represents the actual game screen. This class also doubles as the config screen.
  */
-public class GambleScreen extends BureauScreen implements EventListener {
+public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> implements EventListener {
 
   /**
    * 3x3 symbols packed into a single array. First reel goes from 0 to 2, second from 3 to 5 and
@@ -158,12 +158,11 @@ public class GambleScreen extends BureauScreen implements EventListener {
    */
   protected static final int REELSTOPSOUND=3;
   
-  private FadeOverScreen fadeOverScreen;
-  
   private Sound triggerSound;
   private Sound winSound;
   private Sound ejectCoinSound;
   private Sound reelStopSound;
+  private FadeOverScreen fadeOverScreen;
   
   private static final AssetDescriptor[] ASSETS = {
     new AssetDescriptor<TextureAtlas>("textures/gamblescreen.atlas",TextureAtlas.class),
@@ -180,7 +179,7 @@ public class GambleScreen extends BureauScreen implements EventListener {
    * a variation.
    * @param variation the game variant
    */
-  public GambleScreen(BureauGame game, Player player, Variation variation) {
+  public GambleScreen(T game, Player player, Variation variation) {
     super(game);
     this.player = player;
     this.variation=variation;
@@ -489,7 +488,7 @@ public class GambleScreen extends BureauScreen implements EventListener {
       // NOTE: persisting should probably be done transparently in Player.win() ans Player.loose(),
       // but im not compfortable with writing often on flash memory.
       if (player!=null) player.persist();
-      fadeOverScreen.configure(game,this,new MenuScreen(game),1);
+      fadeOverScreen.configure(game,this,new MenuScreen<SlotMachine>(game),1);
       game.setScreen(fadeOverScreen);
     }
     

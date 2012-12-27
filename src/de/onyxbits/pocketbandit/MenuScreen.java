@@ -19,12 +19,10 @@ import de.onyxbits.bureauengine.screen.*;
 import de.onyxbits.bureauengine.*;
 import de.onyxbits.bureauengine.util.*;
 
-
-
 /**
  * Shown on startup. The user may start a new game here, see the credits, change settings. etc.
  */
-public class MenuScreen extends BureauScreen implements EventListener {
+public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implements EventListener {
   
   private Button startGame;
   private Button showCredits;
@@ -34,23 +32,23 @@ public class MenuScreen extends BureauScreen implements EventListener {
   private Button trialNo;
   private Button trialLater;
   
-  private LinkHandler linkHandler;
-  
   private TextureRegion background;
   private TextureAtlas localAtlas;
   private TextureAtlas globalAtlas;
   private int offset=-64;
   private int scale=0;
+  
   private FadeOverScreen fadeOverScreen;
   
-  private SlotMachine slotGame; // Alias for BuereauScreen.game with proper type.
+  
+  //private SlotMachine slotGame; // Alias for BuereauScreen.game with proper type.
   
   private static final AssetDescriptor[] ASSETS = {
     new AssetDescriptor<Music>("music/Pinball Spring.mp3",Music.class), 
     new AssetDescriptor<TextureAtlas>("textures/menuscreen.atlas",TextureAtlas.class),
   };
   
-  public MenuScreen(BureauGame game) {
+  public MenuScreen(T game) {
     super(game);
   }
   
@@ -61,8 +59,6 @@ public class MenuScreen extends BureauScreen implements EventListener {
   public void readyScreen() {
     this.stage = new Stage(320, 480, true,game.spriteBatch);
     fadeOverScreen = new FadeOverScreen();
-    linkHandler=new LinkHandler();
-    slotGame = (SlotMachine)game;
     
     Table layout = new Table();
     layout.setBounds(0,0,stage.getWidth(),stage.getHeight());
@@ -97,8 +93,8 @@ public class MenuScreen extends BureauScreen implements EventListener {
     layout.layout();
     
     stage.addActor(layout);
-    if (slotGame.trialPeriod!=null && slotGame.trialPeriod.getState()==TrialPeriod.INPROGRESS && 
-    slotGame.trialPeriod.isOver()) {
+    if (game.trialPeriod!=null && game.trialPeriod.getState()==TrialPeriod.INPROGRESS && 
+    game.trialPeriod.isOver()) {
       buildFeedbackDialog().show(stage);
     }
     showCredits.addListener(this);
@@ -120,7 +116,7 @@ public class MenuScreen extends BureauScreen implements EventListener {
     if (isOver && actor==startGame && input.getType().equals(InputEvent.Type.touchUp)) {
       Variation v = Variation.loadDefaultVariation();
       Player p = new Player(v);   
-      fadeOverScreen.configure(game,this,new GambleScreen(game,p,v),1);
+      fadeOverScreen.configure(game,this,new GambleScreen<SlotMachine>(game,p,v),1);
       game.setScreen(fadeOverScreen);
     }
     
@@ -130,20 +126,20 @@ public class MenuScreen extends BureauScreen implements EventListener {
     
     if (isOver && actor==settings && input.getType().equals(InputEvent.Type.touchUp)) {
       Variation v = Variation.loadDefaultVariation();
-      fadeOverScreen.configure(game,this,new GambleScreen(game,null,v),1);
+      fadeOverScreen.configure(game,this,new GambleScreen<SlotMachine>(game,null,v),1);
       game.setScreen(fadeOverScreen);
     }
     
     if (isOver && actor==trialLater && input.getType().equals(InputEvent.Type.touchUp)) {
       // We just wipe all the data from the trial -> The extension is granted by completely
       // restarting the trial.
-      slotGame.trialPeriod.reset();
+      game.trialPeriod.reset();
     }
     
     if (isOver && (actor==trialNo || actor==trialYes) && input.getType().equals(InputEvent.Type.touchUp)) {
       // We don't really care how the user decided. It's sufficient to jot down that the 
       // decission is final.
-      slotGame.trialPeriod.setState(TrialPeriod.ENDED);
+      game.trialPeriod.setState(TrialPeriod.ENDED);
     }
     
     return true;
@@ -164,7 +160,7 @@ public class MenuScreen extends BureauScreen implements EventListener {
     up = new TextureRegionDrawable(localAtlas.findRegion("btn_later_up"));
     down = new TextureRegionDrawable(localAtlas.findRegion("btn_later_down"));
     trialLater = new ImageButton(up,down);
-    linkHandler.register(trialYes,"market://details?id=de.onyxbits.pocketbandit");
+    game.linkHandler.register(trialYes,"market://details?id=de.onyxbits.pocketbandit");
     trialYes.addListener(this);
     trialNo.addListener(this);
     trialLater.addListener(this);
@@ -188,11 +184,11 @@ public class MenuScreen extends BureauScreen implements EventListener {
     content.row();
     content.add();
     content.add("Patrick Ahlbrecht").left();
-    content.add(linkHandler.register(new ImageButton(up),"http://www.onyxbits.de/pocketbandit/"));
+    content.add(game.linkHandler.register(new ImageButton(up),"http://www.onyxbits.de/pocketbandit/"));
     content.row();
     content.add();
     content.add("LibGDX Project").left();
-    content.add(linkHandler.register(new ImageButton(up),"http://libgdx.badlogicgames.com/"));
+    content.add(game.linkHandler.register(new ImageButton(up),"http://libgdx.badlogicgames.com/"));
     content.row();
     content.add("Graphics").left();
     content.row();
@@ -206,29 +202,29 @@ public class MenuScreen extends BureauScreen implements EventListener {
     content.row();
     content.add();
     content.add("Kevin MacLeod").left();
-    content.add(linkHandler.register(new ImageButton(up),"http://incompetech.com/"));
+    content.add(game.linkHandler.register(new ImageButton(up),"http://incompetech.com/"));
     content.row();
     content.add("Sfx").left();
     content.row();
     content.add();
     content.add("bradwesson").left();
-    content.add(linkHandler.register(new ImageButton(up),"http://www.freesound.org/people/bradwesson/"));
+    content.add(game.linkHandler.register(new ImageButton(up),"http://www.freesound.org/people/bradwesson/"));
     content.row();
     content.add();
     content.add("q-k").left();
-    content.add(linkHandler.register(new ImageButton(up),"http://www.freesound.org/people/q-k/"));
+    content.add(game.linkHandler.register(new ImageButton(up),"http://www.freesound.org/people/q-k/"));
     content.row();
     content.add();
     content.add("creek23").left();
-    content.add(linkHandler.register(new ImageButton(up),"http://www.freesound.org/people/creek23/"));
+    content.add(game.linkHandler.register(new ImageButton(up),"http://www.freesound.org/people/creek23/"));
     content.row();
     content.add();
     content.add("ehproductions").left();
-    content.add(linkHandler.register(new ImageButton(up),"http://www.freesound.org/people/ehproductions/"));
+    content.add(game.linkHandler.register(new ImageButton(up),"http://www.freesound.org/people/ehproductions/"));
     content.row();
     content.add();
     content.add("Mike Koenig").left();
-    content.add(linkHandler.register(new ImageButton(up),"http://soundbible.com/"));
+    content.add(game.linkHandler.register(new ImageButton(up),"http://soundbible.com/"));
     
     // Note: the Dialog class handles buttons internally and closes by default when one is pressed,
     // so we don't need to to anything except adding one.

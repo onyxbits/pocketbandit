@@ -25,6 +25,7 @@ public class SlotMachine extends BureauGame {
   
   public Skin skin;
   public TrialPeriod trialPeriod;
+  public LinkHandler linkHandler;
   
   protected MuteManager createMuteManager() {
     MuteManager ret = new MuteManager();
@@ -44,6 +45,8 @@ public class SlotMachine extends BureauGame {
         trialPeriod.trialed(); 
       }
     }
+    
+    linkHandler = new LinkHandler();
     
     assetManager.load("textures/global.atlas",TextureAtlas.class);
     assetManager.finishLoading();
@@ -85,12 +88,12 @@ public class SlotMachine extends BureauGame {
     }
     
     if (variant==null) {
-      return new MenuScreen(this);
+      return new MenuScreen<SlotMachine>(this);
     }
     else {
       Variation v =  Variation.loadVariation(Gdx.files.internal(variant));
       Player p = new Player(v);
-      return new GambleScreen(this,p,v);
+      return new GambleScreen<SlotMachine>(this,p,v);
     }
   }
   

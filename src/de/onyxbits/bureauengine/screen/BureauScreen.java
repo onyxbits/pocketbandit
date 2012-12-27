@@ -24,7 +24,7 @@ import de.onyxbits.bureauengine.audio.MuteListener;
  * <code>BureauScreen</code>S are not meant to be recycled. Once they are hidden, they
  * must not be shown again.
  */
-public abstract class BureauScreen implements Screen, MuteListener {
+public abstract class BureauScreen<T extends BureauGame> implements Screen, MuteListener {
   
   /**
    * <code>Stage</code> of this screen. Will be rendered automatically.
@@ -34,7 +34,7 @@ public abstract class BureauScreen implements Screen, MuteListener {
   /**
    * Reference to the game object.
    */
-  protected BureauGame game;
+  protected T game;
   
   /**
    * Music playing on this screen
@@ -46,7 +46,7 @@ public abstract class BureauScreen implements Screen, MuteListener {
    * register all required assets with the <code>AssetManager</code> here.
    * @param game callback reference to the main game object
    */
-  public BureauScreen(BureauGame game) {
+  public BureauScreen(T game) {
     this.game=game;
     AssetDescriptor ad[] = getAssets();
     for (AssetDescriptor tmp: ad) {
