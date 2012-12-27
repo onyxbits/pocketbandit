@@ -90,7 +90,7 @@ class Symbol extends Image {
     int posY= (int)getY();
     
     if (posY==0) {
-      posY=(int)(3*symbolHeight);
+      posY=(3*symbolHeight);
       face = variation.pick(reel);
       setDrawable(symbols[face]);
     }
