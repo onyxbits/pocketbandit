@@ -66,6 +66,9 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   
   @Override
   public void dispose() {
+    if (Gdx.input.getInputProcessor()==stage) {
+      Gdx.input.setInputProcessor(null);
+    }
     if (stage!=null) stage.dispose();
     AssetDescriptor ad[] = getAssets();
     for (AssetDescriptor tmp: ad) { 
