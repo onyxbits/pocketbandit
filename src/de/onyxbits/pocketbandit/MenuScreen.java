@@ -215,14 +215,6 @@ public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implement
     content.add(game.linkHandler.register(new ImageButton(up),"http://www.freesound.org/people/q-k/"));
     content.row();
     content.add();
-    content.add("creek23").left();
-    content.add(game.linkHandler.register(new ImageButton(up),"http://www.freesound.org/people/creek23/"));
-    content.row();
-    content.add();
-    content.add("ehproductions").left();
-    content.add(game.linkHandler.register(new ImageButton(up),"http://www.freesound.org/people/ehproductions/"));
-    content.row();
-    content.add();
     content.add("Mike Koenig").left();
     content.add(game.linkHandler.register(new ImageButton(up),"http://soundbible.com/"));
     
