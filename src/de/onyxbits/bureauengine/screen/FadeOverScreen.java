@@ -113,7 +113,7 @@ public class FadeOverScreen implements Screen {
       case MIDWAY: {
         // The overlay is fully opaque now -> we can get away with stalling the rendering thread
         // without the player noticing.
-        game.assetManager.finishLoading();
+        toScreen.prepareAssets(true);
         fadePercent=0;
         fadeTime=0;
         fromScreen.getMusic().stop();
