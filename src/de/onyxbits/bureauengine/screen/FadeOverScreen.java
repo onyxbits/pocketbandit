@@ -120,6 +120,8 @@ public class FadeOverScreen implements Screen {
           toScreen.music.setVolume(0);
           if (!game.muteManager.isMusicMuted()) toScreen.music.play();
         }
+        // And since pauses go unnoticed now, might as well clean up.
+        System.gc();
         state=SKIP;
         break;
       }
