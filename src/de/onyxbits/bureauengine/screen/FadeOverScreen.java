@@ -20,7 +20,6 @@ public class FadeOverScreen implements Screen {
 
   private BureauScreen fromScreen;
   private BureauScreen toScreen;
-  private float[] time;
   private BureauGame game;
   private int state;
   private int screenWidth,screenHeight;
@@ -75,17 +74,16 @@ public class FadeOverScreen implements Screen {
    * @param game callback into the game
    * @param fromScreen the <code>Screen</code> to transition away from
    * @param toScreen the <code>Screen</code> to transit to.
-   * @param time timing values.
+   * @param time time for fading in/out in seconds.
    */
-  public void configure(BureauGame game, BureauScreen fromScreen, BureauScreen toScreen, float... time) {
+  public void configure(BureauGame game, BureauScreen fromScreen, BureauScreen toScreen, float time) {
     this.fromScreen=fromScreen;
     this.toScreen=toScreen;
     this.game=game;
-    this.time=time;
     state=START;
     screenWidth=Gdx.graphics.getWidth();
     screenHeight=Gdx.graphics.getWidth();
-    fadeDuration=time[0];
+    fadeDuration=time;
     fadePercent=0;
     fadeTime=0;
   }
