@@ -37,28 +37,39 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   protected T game;
   
   /**
-   * Music playing on this screen
+   * Music playing on this screen. May be null.
    */
   protected Music music;
   
   /**
-   * Create a new <code>Screen</code>. Subclasses should override this constructor and
-   * register all required assets with the <code>AssetManager</code> here.
+   * Instantiate a new screen. Note: instantiation must usually happen fast and on the
+   * UI thread (e.g. whne the player hits an "exit" button). Put all your real construction
+   * work in the <code>readyScreen()</code> method.
    * @param game callback reference to the main game object
    */
   public BureauScreen(T game) {
     this.game=game;
+  }
+  
+  /**
+   * Register all assets declared by <code>getAssets()</code> with the <code>AssetManager</code>. 
+   * This method must be called before <code>readyScreen()</code> may be called. Note: this is a
+   * two step process because asset loading (at least as far as textures are concerned) must be
+   * done on the UI thread which will cause a noticable pause in game play. Some games may want
+   * to handle that pause differently than others.
+   * @param finishLoading true to also call <code>AssetManager.finishLoading()</code>.
+   */
+  public void prepareAssets(boolean finishLoading) {
     AssetDescriptor ad[] = getAssets();
     for (AssetDescriptor tmp: ad) {
       game.assetManager.load(tmp);
     }
+    if (finishLoading) game.assetManager.finishLoading();
   }
   
   /**
-   * Subclasses may override this for autoloading/disposing of assets. This method is
-   * optional, subclasses may handle their assets differently if they wish.
-   * @return a list of assets that should be loaded into the <code>AssetManager</code> by the
-   * constructor and disposed of again in the <code>dispose()</code> method.
+   * Declare assets that are to be automatically loaded/unloaded.
+   * @return The assets, this <code>Screen</code> depends on.
    */
   protected AssetDescriptor[] getAssets() {
     return new AssetDescriptor[0];
@@ -66,6 +77,13 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   
   @Override
   public void dispose() {
+    game.muteManager.removeMuteListener(this);
+    if (music!=null) {
+      music.stop();
+    }
+    if (Gdx.input.getInputProcessor()==stage) {
+      Gdx.input.setInputProcessor(null);
+    }
     if (stage!=null) stage.dispose();
     AssetDescriptor ad[] = getAssets();
     for (AssetDescriptor tmp: ad) { 
@@ -73,9 +91,17 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
     }
   }
   
+  /**
+   * Showing the screen will register the stage as an inputprocessor, register
+   * the screen as a <code>MuteListener</code> and start playing music.
+   */
   @Override
   public void show() {
     Gdx.input.setInputProcessor(stage);
+    game.muteManager.addMuteListener(this);
+    if (music!=null && !game.muteManager.isMusicMuted()) {
+      music.play();
+    }
   }
   
   @Override
@@ -109,11 +135,12 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
    */
   @Override
   public void muteMusic(boolean mute) {
+    if (music==null) return;
     if (mute) {
-      getMusic().pause();
+      music.pause();
     }
     else {
-      getMusic().play();
+      music.play();
     }
   }
   
@@ -132,19 +159,8 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   }
   
   /**
-   * Access to the (currently playing) music of the screen. Note: music may be controlled externally
-   * (e.g. while in screen transitions).
-   * @return the screen's music. Default implementation returns <code>NullMusic</code>
-   */
-  public Music getMusic() {
-    if (music==null) music = new NullMusic(); // Create this lazyly!
-    return music;
-  }
-  
-  /**
-   * Initialize this screen. Subclasses should override this method to register eventlisteners
-   * and to do any heavy duty construction work (e.g. building the stage). The default implementation
-   * just creates a stage that fills the entire screen.
+   * Actually construct the screen object. Subclasses should override this method.
+   * The default implementation just constructs a <code>Stage</code>.
    */
   public void readyScreen() {
     this.stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false,game.spriteBatch);
