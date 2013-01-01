@@ -62,9 +62,6 @@ public abstract class BureauGame extends Game {
     tmp.prepareAssets(true);
     tmp.readyScreen();
     setScreen(tmp);
-    if (!muteManager.isMusicMuted()) {
-      tmp.getMusic().play();
-    }
     Texture.setAssetManager(assetManager);
   }
   

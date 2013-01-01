@@ -37,7 +37,7 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   protected T game;
   
   /**
-   * Music playing on this screen
+   * Music playing on this screen. May be null.
    */
   protected Music music;
   
@@ -77,6 +77,10 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   
   @Override
   public void dispose() {
+    game.muteManager.removeMuteListener(this);
+    if (music!=null) {
+      music.stop();
+    }
     if (Gdx.input.getInputProcessor()==stage) {
       Gdx.input.setInputProcessor(null);
     }
@@ -88,11 +92,16 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   }
   
   /**
-   * Showing the screen will register the state as an inputprocessor. 
+   * Showing the screen will register the stage as an inputprocessor, register
+   * the screen as a <code>MuteListener</code> and start playing music.
    */
   @Override
   public void show() {
     Gdx.input.setInputProcessor(stage);
+    game.muteManager.addMuteListener(this);
+    if (music!=null && !game.muteManager.isMusicMuted()) {
+      music.play();
+    }
   }
   
   @Override
@@ -126,11 +135,12 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
    */
   @Override
   public void muteMusic(boolean mute) {
+    if (music==null) return;
     if (mute) {
-      getMusic().pause();
+      music.pause();
     }
     else {
-      getMusic().play();
+      music.play();
     }
   }
   
@@ -149,17 +159,8 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   }
   
   /**
-   * Access to the (currently playing) music of the screen. Note: music may be controlled externally
-   * (e.g. while in screen transitions).
-   * @return the screen's music. Default implementation returns <code>NullMusic</code>
-   */
-  public Music getMusic() {
-    if (music==null) music = new NullMusic(); // Create this lazyly!
-    return music;
-  }
-  
-  /**
    * Actually construct the screen object. Subclasses should override this method.
+   * The default implementation just constructs a <code>Stage</code>.
    */
   public void readyScreen() {
     this.stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false,game.spriteBatch);

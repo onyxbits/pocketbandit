@@ -12,13 +12,9 @@ import com.badlogic.gdx.graphics.Texture;
 import de.onyxbits.bureauengine.BureauGame;
 
 /**
- * Implements a fading over effect between two screens (fade to black, fade from black). To make
- * proper use of this class:
- * <ul>
- *   <li> Make sure that music on fading in screen is not playing. It will be started from this class
- *   <li> Do not (de-)subscribe <code>MuteListener</code>S. This calss will handle that.
- *   <li> Make sure to <code>dispose()</code> when no longer needed.
- * </ul>
+ * Implements a fading over effect between two screens (fade to black, fade from black). Note:
+ * music is faded as well, meaning, this class will manipulate the <code>Music</code> object
+ * on hte target screen, potentially setting it to null or even replacing it.
  */
 public class FadeOverScreen implements Screen {
 
@@ -113,15 +109,17 @@ public class FadeOverScreen implements Screen {
       case MIDWAY: {
         // The overlay is fully opaque now -> we can get away with stalling the rendering thread
         // without the player noticing.
-        toScreen.prepareAssets(true);
         fadePercent=0;
         fadeTime=0;
-        fromScreen.getMusic().stop();
-        game.muteManager.removeMuteListener(fromScreen);
+        if (fromScreen.music!=null) {
+          fromScreen.music.stop();
+        }
+        toScreen.prepareAssets(true); 
         toScreen.readyScreen();
-        toScreen.getMusic().setVolume(0);
-        if (!game.muteManager.isMusicMuted()) toScreen.getMusic().play();
-        game.muteManager.addMuteListener(toScreen);
+        if (toScreen.music!=null) {
+          toScreen.music.setVolume(0);
+          if (!game.muteManager.isMusicMuted()) toScreen.music.play();
+        }
         state=SKIP;
         break;
       }
@@ -135,7 +133,14 @@ public class FadeOverScreen implements Screen {
       case FADEIN: {
         toScreen.render(delta);
         if (fade(delta)) {
+          // We have to do a little dance with the music here. Game.setScreen() will call
+          // BureauScreen.show() and that will call Music.play(). Ideally, Music.play() should
+          // do nothing if it is already playing, but it's not implemented in all backends that
+          // way. So to avoid an audio glitch, take the object away in the right moment.
+          Music tmp = toScreen.music;
+          toScreen.music=null;
           game.setScreen(toScreen);
+          toScreen.music=tmp;
           fromScreen.dispose();
           fromScreen=null;
           toScreen=null;
@@ -163,14 +168,18 @@ public class FadeOverScreen implements Screen {
     Color tmp = game.spriteBatch.getColor();
     // Apply the effect
     if (state==FADEOUT) {
-      fromScreen.getMusic().setVolume(1f-fadePercent);
+      if (fromScreen.music!=null) {
+        fromScreen.music.setVolume(1f-fadePercent);
+      }
       game.spriteBatch.begin();
       game.spriteBatch.setColor(0,0,0,fadePercent);
       game.spriteBatch.draw(blankTexture,0,0,screenWidth,screenHeight);
       game.spriteBatch.end();
     }
     if (state==FADEIN) {
-      toScreen.getMusic().setVolume(fadePercent);
+      if (toScreen.music!=null) {
+        toScreen.music.setVolume(fadePercent);
+      }
       game.spriteBatch.begin();
       game.spriteBatch.setColor(0,0,0,1f-fadePercent);
       game.spriteBatch.draw(blankTexture,0,0,screenWidth,screenHeight);
