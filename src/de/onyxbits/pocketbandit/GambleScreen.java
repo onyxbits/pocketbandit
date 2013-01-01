@@ -488,7 +488,7 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
       // NOTE: persisting should probably be done transparently in Player.win() ans Player.loose(),
       // but im not compfortable with writing often on flash memory.
       if (player!=null) player.persist();
-      fadeOverScreen.configure(game,this,new MenuScreen<SlotMachine>(game),1);
+      fadeOverScreen.configure(game,this,new MenuScreen<SlotMachine>(game),0.5f);
       game.setScreen(fadeOverScreen);
     }
     
