@@ -50,6 +50,7 @@ public abstract class BureauGame extends Game {
     super.dispose();
     if (spriteBatch!=null) spriteBatch.dispose();
     if (assetManager!=null) assetManager.dispose();
+    if (getScreen()!=null) getScreen().dispose();
   }
   
   @Override
