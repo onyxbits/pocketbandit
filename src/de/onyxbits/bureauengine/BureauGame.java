@@ -2,6 +2,7 @@ package de.onyxbits.bureauengine;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -41,19 +42,22 @@ public abstract class BureauGame extends Game {
   public MuteManager muteManager;
   
   /**
+   * Global preferences. This is a managed object that will get automatically flushed 
+   * when the game is paused or destroyed. Note: Do not store anything in this object
+   * and then try to retrieve it without doing a <code>flush()</code> in between! At
+   * least on Android, this will fail and you will get the old value!
+   */
+  public static Preferences prefs;
+  
+  /**
    * General purpose Random Number Generator.
    */
   public static final Random rng = new Random(System.currentTimeMillis());
 
-  @Override
-  public void dispose() {
-    super.dispose();
-    if (spriteBatch!=null) spriteBatch.dispose();
-    if (assetManager!=null) assetManager.dispose();
-  }
   
   /**
    * The game is booted in this order:<p>
+   * <code>createPreferences()</code>
    * <code>bootGame()</code>
    * <code>create*Manager()</code>
    * <code>createFirstScreen()</code>
@@ -62,6 +66,7 @@ public abstract class BureauGame extends Game {
    */
   @Override
   public void create() {
+    prefs = createPreferences();
     bootGame();
     spriteBatch = createSpriteBatch();
     assetManager = createAssetManager();
@@ -74,20 +79,50 @@ public abstract class BureauGame extends Game {
     Texture.setAssetManager(assetManager);
   }
   
+  /**
+   * Subclasses must call <code>super.resume()</code>.
+   */
   @Override
   public void resume() {
     if (assetManager!=null) {
       assetManager.finishLoading();
     }
+    prefs = createPreferences();
   }
   
+  /**
+   * Subclasses must call <code>super.pause()</code>.
+   */
+  @Override
   public void pause() {
+    if (prefs!=null) prefs.flush();
+    super.pause();
+  }
+  
+  /**
+   * Subclasses must call </code>super.dispose()</code>
+   */
+  @Override
+  public void dispose() {
+    if (prefs!=null) prefs.flush();
+    super.dispose();
+    if (spriteBatch!=null) spriteBatch.dispose();
+    if (assetManager!=null) assetManager.dispose();
   }
   
   /**
    * Called as the first method. Default implementation does nothing.
    */
   protected void bootGame() {}
+  
+  /**
+   * Create the global preferences.
+   * @return a <code>Preferences</code> object that is linked to a persistent
+   * storage or null if not desired. Default implementation returns null.
+   */
+  protected Preferences createPreferences() {
+    return null;
+  }
   
   /**
    * Get the screen that is to show on game startup

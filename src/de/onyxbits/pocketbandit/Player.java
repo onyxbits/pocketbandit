@@ -126,5 +126,4 @@ public class Player {
     SlotMachine.prefs.putInteger(toKey(true),credit);
     SlotMachine.prefs.putInteger(toKey(false),highscore);
   }
-  
 }

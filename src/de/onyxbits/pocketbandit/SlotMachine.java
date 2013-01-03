@@ -18,21 +18,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.*;
  */
 public class SlotMachine extends BureauGame {
   
-  /**
-   * The name to use for <code>Gdx.app.getPreferences</code>
-   */
-  public static final String PREFSNAME = "PocketBandit";
   
-  public static Preferences prefs;
   public static FadeOverScreen fadeOverScreen;
-  
   public Skin skin;
   public TrialPeriod trialPeriod;
   public LinkHandler linkHandler;
   public Loader loader;
   
   protected void bootGame() {
-    prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
     fadeOverScreen = new FadeOverScreen();
     loader=new Loader(prefs);
     loader.rescan();
@@ -49,6 +42,10 @@ public class SlotMachine extends BureauGame {
         trialPeriod.trialed(); 
       }
     }
+  }
+  
+  protected Preferences createPreferences() {
+    return Gdx.app.getPreferences("PocketBandit");
   }
   
   protected MuteManager createMuteManager() {
@@ -89,7 +86,6 @@ public class SlotMachine extends BureauGame {
   @Override
   public void resume() {
     fadeOverScreen = new FadeOverScreen();
-    prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
     super.resume();
   }
   
