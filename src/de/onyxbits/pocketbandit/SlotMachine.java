@@ -23,9 +23,13 @@ public class SlotMachine extends BureauGame {
    */
   public static final String PREFSNAME = "PocketBandit";
   
+  public static Preferences prefs;
+  public static FadeOverScreen fadeOverScreen;
+  
   public Skin skin;
   public TrialPeriod trialPeriod;
   public LinkHandler linkHandler;
+  public Loader loader;
   
   protected MuteManager createMuteManager() {
     MuteManager ret = new MuteManager();
@@ -34,6 +38,11 @@ public class SlotMachine extends BureauGame {
   }
   
   protected BureauScreen createStartUpScreen() {
+    fadeOverScreen = new FadeOverScreen();
+    prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
+    loader=new Loader(prefs);
+    loader.rescan();
+   
     if (Gdx.files.internal("playstore.txt").exists()) {
       trialPeriod = new TrialPeriod(Gdx.app.getPreferences(PREFSNAME),"trial.count","trial.first","trial.state");
       if (trialPeriod.getState()==TrialPeriod.UNKNOWN) {
@@ -67,38 +76,25 @@ public class SlotMachine extends BureauGame {
     scrollPaneStyle.background = new NinePatchDrawable(new NinePatch(globalAtlas.findRegion("roundbox_grey"),8,8,8,8));
     skin.add("default",scrollPaneStyle);
     
-    // NOTE: -Dvariant=<file> to fastboot to a GambleScreen - for debugging
-    String variant=System.getProperty("variant",null);
-    
-    // NOTE: -Dsequence=1,2,3,4,.. to preload a non random sequence - for debugging
-    int[] symbolSequence = null;
-    String[] tmpSeq= System.getProperty("sequence","").split(",");
-    if (!tmpSeq[0].equals("") && !tmpSeq[0].equals("+")) {
-      symbolSequence= new int[tmpSeq.length];
-      for(int i=0;i<tmpSeq.length;i++) {
-        symbolSequence[i]=Integer.parseInt(tmpSeq[i]);
-      }
-    }
-    // NOTE: -Dsequence=+,1000,0 to put 1000 times the 0 into the sequence - for debugging
-    if (!tmpSeq[0].equals("") && tmpSeq[0].equals("+")) {
-      symbolSequence= new int[Integer.parseInt(tmpSeq[1])];
-      for(int i=0;i<tmpSeq.length;i++) {
-        symbolSequence[i]=Integer.parseInt(tmpSeq[2]);
-      }
-    }
-    
-    if (variant==null) {
-      return new MenuScreen<SlotMachine>(this);
-    }
-    else {
-      Variation v =  Variation.loadVariation(Gdx.files.internal(variant));
-      Player p = new Player(v);
-      return new GambleScreen<SlotMachine>(this,p,v);
-    }
+    return new MenuScreen<SlotMachine>(this);
+  }
+  
+  @Override
+  public void pause() {
+    prefs.flush();
+    super.pause();
+  }
+  
+  @Override
+  public void resume() {
+    fadeOverScreen = new FadeOverScreen();
+    prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
+    super.resume();
   }
   
   @Override
   public void dispose() {
+    prefs.flush();
     skin.dispose();
     super.dispose();
   }

@@ -14,11 +14,6 @@ import java.util.Arrays;
 public class Variation {
 
   /**
-   * Cached list of rule definitions
-   */
-  private static String[] cachedRules;
-   
-  /**
    * Name (and order) of the symbol textures
    */
   public String symbolNames[];
@@ -61,13 +56,7 @@ public class Variation {
    */
   private int symbolSequenceIndex;
   
-  /**
-   * The key name for storing persisting the default variation
-   */
-  private static final String KEYNAME = "rulefile";
-  
   public Variation(){}
-  
   
   /**
    * Match a payline against the <code>paytable</code>.
@@ -143,106 +132,5 @@ public class Variation {
       paytable[2][2],
     };
     return ret;
-  }
-
-  /**
-   * List all variations
-   * @return the names of the available rule files (sorted alphabetically)
-   */
-  public static String[] listVariations() {
-      if (cachedRules==null) {
-      FileHandle fh[] = Gdx.files.internal("rules").list();
-      cachedRules = new String[fh.length];
-      for (int i=0;i<fh.length;i++) {
-        cachedRules[i]=fh[i].path();
-      }
-      // FIXME: Filenames can be totally different from machinenames. All this
-      // sorting does is to make sure that the same order is maintained
-      Arrays.sort(cachedRules);
-    }
-    return cachedRules;
-  }
-  
-  /**
-   * Load serialized <code>Variation</code> description from a JSON file
-   * @param fh the file to read from
-   * @return the reconstructed <code>Variation</code>
-   */
-  public static Variation loadVariation(FileHandle fh) {
-    return new Json().fromJson(Variation.class,fh);
-  }
-  
-  /**
-   * Load the default variation
-   * @return a variation.
-   */
-  public static Variation loadDefaultVariation() {
-    String[] rules = listVariations();
-    Preferences prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
-    checkPrefsValid(prefs);
-    return loadVariation(Gdx.files.internal(prefs.getString(KEYNAME,rules[0])));
-  }
-  
-  /**
-   * Make the next in list variation the default one and load it. Note:
-   * selection is saved to the preferences, but <code>Preferences.flush()</code>
-   * must be called externally.
-   * @return the variation that comes alphabetically after the current one
-   */
-  public static Variation loadNextVariation() {
-    String[] rules = listVariations();
-    Preferences prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
-    checkPrefsValid(prefs);
-    String current = prefs.getString(KEYNAME,rules[0]);
-    for (int i=0;i<rules.length;i++) {
-      if (rules[i].equals(current)) {
-        i++;
-        if (i>=rules.length) i=0;
-        prefs.putString(KEYNAME,rules[i]);
-        prefs.flush();
-        break;
-      }
-    }
-    return loadDefaultVariation();
-  }
-  
-  /**
-   * Make the previous in list variation the default one and load it. Note:
-   * selection is saved to the preferences, but <code>Preferences.flush()</code>
-   * must be called externally.
-   * @return the variation that comes alphabetically before the current one
-   */
-  public static Variation loadPreviousVariation() {
-    String[] rules = listVariations();
-    Preferences prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
-    checkPrefsValid(prefs);
-    String current = prefs.getString(KEYNAME,rules[0]);
-    for (int i=0;i<rules.length;i++) {
-      if (rules[i].equals(current)) {
-        i--;
-        if (i<=0) i=rules.length-1;
-        prefs.putString(KEYNAME,rules[i]);
-        break;
-      }
-    }
-    return loadDefaultVariation();
-  }
-  
-  /**
-   * Dirty hack: between versions, rule files may be removed or renamed ->
-   * check if the configured rule still exists and if not, reset it. We should
-   * do more robust sanity checking here.
-   */
-  private static void checkPrefsValid(Preferences prefs) {
-    String name = prefs.getString(KEYNAME,null);
-    if (name==null) {
-      // Nothing configured, yet -> OK
-      return;
-    }
-    if (!Gdx.files.internal(name).exists()) {
-      // Gotcha! Nuke whatever is in there
-      prefs.remove(KEYNAME);
-      prefs.flush();
-    }
   }
 }

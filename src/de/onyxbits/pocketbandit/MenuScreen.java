@@ -38,8 +38,6 @@ public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implement
   private int offset=-64;
   private int scale=0;
   
-  private FadeOverScreen fadeOverScreen;
-  
   
   //private SlotMachine slotGame; // Alias for BuereauScreen.game with proper type.
   
@@ -58,7 +56,6 @@ public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implement
   
   public void readyScreen() {
     this.stage = new Stage(320, 480, true,game.spriteBatch);
-    fadeOverScreen = new FadeOverScreen();
     
     Table layout = new Table();
     layout.setBounds(0,0,stage.getWidth(),stage.getHeight());
@@ -114,10 +111,10 @@ public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implement
     
     
     if (isOver && actor==startGame && input.getType().equals(InputEvent.Type.touchUp)) {
-      Variation v = Variation.loadDefaultVariation();
+      Variation v = game.loader.getDefault();
       Player p = new Player(v);   
-      fadeOverScreen.configure(game,this,new GambleScreen<SlotMachine>(game,p,v),0.5f);
-      game.setScreen(fadeOverScreen);
+      SlotMachine.fadeOverScreen.configure(game,this,new GambleScreen<SlotMachine>(game,p,v),0.5f);
+      game.setScreen(SlotMachine.fadeOverScreen);
     }
     
     if (isOver && actor==showCredits && input.getType().equals(InputEvent.Type.touchUp)) {
@@ -125,9 +122,9 @@ public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implement
     }
     
     if (isOver && actor==settings && input.getType().equals(InputEvent.Type.touchUp)) {
-      Variation v = Variation.loadDefaultVariation();
-      fadeOverScreen.configure(game,this,new GambleScreen<SlotMachine>(game,null,v),0.5f);
-      game.setScreen(fadeOverScreen);
+      Variation v = game.loader.getDefault();
+      SlotMachine.fadeOverScreen.configure(game,this,new GambleScreen<SlotMachine>(game,null,v),0.5f);
+      game.setScreen(SlotMachine.fadeOverScreen);
     }
     
     if (isOver && actor==trialLater && input.getType().equals(InputEvent.Type.touchUp)) {

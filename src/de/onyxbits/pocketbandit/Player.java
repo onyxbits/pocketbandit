@@ -54,7 +54,6 @@ public class Player {
    */
   protected int[] payline = new int[3];
   
-  private Preferences prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
   
   /**
    * Construct a new game state
@@ -65,8 +64,8 @@ public class Player {
     if (variation==null) throw new NullPointerException(); // Crash early
     this.variation = variation;
     // We start out with either the seed capital or the previous winnings. Whichever is higher
-    credit=Math.max(variation.seedCapital,prefs.getInteger(toKey(true),0));
-    highscore=prefs.getInteger(toKey(false),credit);
+    credit=Math.max(variation.seedCapital,SlotMachine.prefs.getInteger(toKey(true),0));
+    highscore=SlotMachine.prefs.getInteger(toKey(false),credit);
   }
   
   /**
@@ -109,8 +108,8 @@ public class Player {
     bet=0;
     streakOfBadLuck++;
     streakOfLuck=0;
-    prefs.putInteger(toKey(true),credit);
-    prefs.putInteger(toKey(false),highscore);
+    SlotMachine.prefs.putInteger(toKey(true),credit);
+    SlotMachine.prefs.putInteger(toKey(false),highscore);
   }
   
   /**
@@ -124,8 +123,8 @@ public class Player {
     streakOfBadLuck=0;
     streakOfLuck++;
     if (credit>highscore) highscore=credit;
-    prefs.putInteger(toKey(true),credit);
-    prefs.putInteger(toKey(false),highscore);
+    SlotMachine.prefs.putInteger(toKey(true),credit);
+    SlotMachine.prefs.putInteger(toKey(false),highscore);
   }
   
 }

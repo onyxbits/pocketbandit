@@ -162,7 +162,6 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
   private Sound winSound;
   private Sound ejectCoinSound;
   private Sound reelStopSound;
-  private FadeOverScreen fadeOverScreen;
   
   private static final AssetDescriptor[] ASSETS = {
     new AssetDescriptor<TextureAtlas>("textures/gamblescreen.atlas",TextureAtlas.class),
@@ -192,7 +191,6 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
   
   public void readyScreen() {
     this.stage = new Stage(320, 480, true,game.spriteBatch);
-    fadeOverScreen = new FadeOverScreen();
     deviceGroup.setTransform(false);
     
     triggerSound=game.assetManager.get("sfx/Pellet Gun Pump-SoundBible.com-517750307.mp3",Sound.class);
@@ -493,8 +491,8 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     } 
     
     if (isOver && actor==exit && input.getType().equals(InputEvent.Type.touchUp)) {
-      fadeOverScreen.configure(game,this,new MenuScreen<SlotMachine>(game),0.5f);
-      game.setScreen(fadeOverScreen);
+      SlotMachine.fadeOverScreen.configure(game,this,new MenuScreen<SlotMachine>(game),0.5f);
+      game.setScreen(SlotMachine.fadeOverScreen);
     }
     
     if (isOver && actor==musicStatus && input.getType().equals(InputEvent.Type.touchUp)) {
@@ -506,11 +504,11 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     }
     
     if (isOver && actor==nextVariation && input.getType().equals(InputEvent.Type.touchUp)) {
-      setVariant(Variation.loadNextVariation());
+      setVariant(game.loader.next());
     }
     
     if (isOver && actor==previousVariation && input.getType().equals(InputEvent.Type.touchUp)) {
-      setVariant(Variation.loadPreviousVariation());
+      setVariant(game.loader.previous());
     }
     
     return true;
