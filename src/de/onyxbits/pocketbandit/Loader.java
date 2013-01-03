@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import java.util.Arrays;
 
-
 /**
  * Handles access to the <code>Variation</code> rule definition files.
  */
@@ -27,6 +26,7 @@ class Loader {
   private Variation[] variations;
   private Preferences prefs;
   private Json json;
+  private Player[] players;
   
   public Loader(Preferences prefs) {
     if (prefs==null) throw new NullPointerException();
@@ -41,6 +41,7 @@ class Loader {
     FileHandle fh[] = Gdx.files.internal(RULESDIR).list();
     rules = new String[fh.length];
     variations = new Variation[fh.length];
+    players = new Player[fh.length];
     for (int i=0;i<fh.length;i++) {
       rules[i]=fh[i].path();
     }
@@ -66,6 +67,23 @@ class Loader {
       variations[index]=json.fromJson(Variation.class,Gdx.files.internal(rules[index]));
     }
     return variations[index];
+  }
+  
+  /**
+   * Get the cached player object for a variation
+   * @param v key
+   * @return value or null if key is not found.
+   */
+  public Player getPlayer(Variation v) {
+    for(int i=0;i<variations.length;i++) {
+      if (variations[i]==v) {
+        if (players[i]==null) {
+          players[i]= new Player(v);
+        }
+        return players[i];
+      }
+    }
+    return null;
   }
   
   /**

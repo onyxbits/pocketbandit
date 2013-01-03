@@ -54,7 +54,6 @@ public class Player {
    */
   protected int[] payline = new int[3];
   
-  
   /**
    * Construct a new game state
    * @param variation rules to use
@@ -67,6 +66,15 @@ public class Player {
     credit=Math.max(variation.seedCapital,SlotMachine.prefs.getInteger(toKey(true),0));
     highscore=SlotMachine.prefs.getInteger(toKey(false),credit);
   }
+  
+  /**
+   * Player takes a seat at the machine. After sitting down, s/he has either his/her previous
+   * cash or the seed capital on hand (whichever is higher).
+   */
+  public void sitDown() {
+    credit = Math.max(credit,variation.seedCapital);
+  }
+   
   
   /**
    * Transform a varition name into a key name (for persisting credits and highscore)

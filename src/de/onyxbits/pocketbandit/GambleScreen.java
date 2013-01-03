@@ -405,7 +405,8 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     // Only show extra information on the setup screen, as the paytable visual is not desgined
     // to keep in sync with dynamically updated information
     if (player==null) {
-      Player tmp = new Player(variant);
+      Player tmp = game.loader.getPlayer(variant);
+      tmp.sitDown();
       paytable.add("- - - - - - - - - - - - - - - - -").colspan(5).center();
       paytable.row();
       paytable.add("Seed capital").colspan(4).left();

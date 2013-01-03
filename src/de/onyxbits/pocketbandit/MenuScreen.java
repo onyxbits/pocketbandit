@@ -112,7 +112,8 @@ public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implement
     
     if (isOver && actor==startGame && input.getType().equals(InputEvent.Type.touchUp)) {
       Variation v = game.loader.getDefault();
-      Player p = new Player(v);   
+      Player p = game.loader.getPlayer(v);   
+      p.sitDown();
       SlotMachine.fadeOverScreen.fadeTo(new GambleScreen<SlotMachine>(game,p,v),0.5f);
     }
     
