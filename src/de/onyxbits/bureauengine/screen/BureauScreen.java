@@ -37,7 +37,8 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   protected T game;
   
   /**
-   * Music playing on this screen. May be null.
+   * Music playing on this screen. May be null, will not be disposed of automatically if
+   * not loaded via an <code>AssetManager</code>.
    */
   protected Music music;
   
@@ -78,9 +79,6 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   @Override
   public void dispose() {
     game.muteManager.removeMuteListener(this);
-    if (music!=null) {
-      music.stop();
-    }
     if (Gdx.input.getInputProcessor()==stage) {
       Gdx.input.setInputProcessor(null);
     }
