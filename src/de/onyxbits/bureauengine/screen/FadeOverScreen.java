@@ -19,7 +19,6 @@ import de.onyxbits.bureauengine.BureauGame;
 public class FadeOverScreen implements Screen {
 
   private Screen fromScreen;
-  private Music fromScreenMusic;
   private BureauScreen toScreen;
   private BureauGame game;
   private int state;
@@ -78,10 +77,7 @@ public class FadeOverScreen implements Screen {
   public void fadeTo(BureauScreen toScreen, float time) {
     this.toScreen=toScreen;
     this.game=toScreen.game;
-    this.fromScreen=game.getScreen();
-    if (fromScreen instanceof BureauScreen) {
-      fromScreenMusic=((BureauScreen)fromScreen).music;
-    }
+    this.fromScreen=game.getScreen(); // If this is null, someone is using the engine in a funky way.
     state=START;
     screenWidth=Gdx.graphics.getWidth();
     screenHeight=Gdx.graphics.getWidth();
@@ -112,8 +108,8 @@ public class FadeOverScreen implements Screen {
         // without the player noticing.
         fadePercent=0;
         fadeTime=0;
-        if (fromScreenMusic!=null) {
-          fromScreenMusic.stop();
+        if ((fromScreen instanceof BureauScreen) && ((BureauScreen)fromScreen).music!=null) {
+          ((BureauScreen)fromScreen).music.stop();
         }
         toScreen.prepareAssets(true); 
         toScreen.readyScreen();
@@ -121,7 +117,8 @@ public class FadeOverScreen implements Screen {
           toScreen.music.setVolume(0);
           if (!game.muteManager.isMusicMuted()) toScreen.music.play();
         }
-        // And since pauses go unnoticed now, might as well clean up.
+        fromScreen.dispose();
+        fromScreen=null;
         System.gc();
         state=SKIP;
         break;
@@ -129,7 +126,7 @@ public class FadeOverScreen implements Screen {
       case SKIP: {
         // Skip the first frame on toScreen. We have to do this since textures can only be loaded
         // on the GL thread, potentially stalling it and resulting in a spike in delta time. Such
-        // spikes mess the fading math. Easiest way to compensate is by throwing one frame away.
+        // spikes mess with the fading math. Easiest way to compensate is by throwing one frame away.
         state=FADEIN;
         break;
       }
@@ -138,14 +135,16 @@ public class FadeOverScreen implements Screen {
         if (fade(delta)) {
           // We have to do a little dance with the music here. Game.setScreen() will call
           // BureauScreen.show() and that will call Music.play(). Ideally, Music.play() should
-          // do nothing if it is already playing, but it's not implemented in all backends that
-          // way. So to avoid an audio glitch, take the object away in the right moment.
+          // do nothing if it is already playing, but not all backends seem to implement it that
+          // way. So, in order to prevent an audio glitch, take it away temporarily.
+          // FIXME: Wouldn't it be better to use a NullMusic object here? Someone implementing a
+          // screen may not be aware of this little hack and run into a nullpointerexcpetion. On
+          // the other hand: its another object to lug around and may cause even weirder and harder
+          // to debug side effects.
           Music tmp = toScreen.music;
           toScreen.music=null;
           game.setScreen(toScreen);
           toScreen.music=tmp;
-          fromScreen.dispose();
-          fromScreen=null;
           toScreen=null;
         }
         break;
@@ -171,8 +170,8 @@ public class FadeOverScreen implements Screen {
     Color tmp = game.spriteBatch.getColor();
     // Apply the effect
     if (state==FADEOUT) {
-      if (fromScreenMusic!=null) {
-        fromScreenMusic.setVolume(1f-fadePercent);
+      if ((fromScreen instanceof BureauScreen) && ((BureauScreen)fromScreen).music!=null) {
+        ((BureauScreen)fromScreen).music.setVolume(1f-fadePercent);
       }
       game.spriteBatch.begin();
       game.spriteBatch.setColor(0,0,0,fadePercent);
