@@ -59,6 +59,7 @@ public class TrialPeriod {
   public static final int ENDEDNEGATIVELY = ENDED | NEGATIVE;
 
   private Preferences prefs;
+  private boolean directFlush;
   private String keyLaunchCount;
   private String keyFirstLaunch;
   private String keyState;
@@ -68,15 +69,17 @@ public class TrialPeriod {
   /**
    * Configure the persistant storage.
    * @param prefs persistent storage
+   * @param directFlush whether or not to call <code>Preferences.flush()</code>.
    * @param keyLaunchCount name of the key with which to count how often the game was started
    * @param keyFirstLaunch name of the key with which to record the date of the first launch
    * @param keyActive name of the key with which to store the state.
    */
-  public TrialPeriod(Preferences prefs, String keyLaunchCount, String keyFirstLaunch, String keyState) {
+  public TrialPeriod(Preferences prefs, boolean directFlush, String keyLaunchCount, String keyFirstLaunch, String keyState) {
     if (prefs==null || keyLaunchCount==null || keyFirstLaunch == null || keyState==null) {
       throw new NullPointerException(); // Crash early
     }
-    this.prefs= prefs;
+    this.prefs=prefs;
+    this.directFlush = directFlush;
     this.keyLaunchCount=keyLaunchCount;
     this.keyFirstLaunch=keyFirstLaunch;
     this.keyState=keyState;
@@ -130,7 +133,7 @@ public class TrialPeriod {
     }
     tmp = prefs.getLong(keyLaunchCount,0);
     prefs.putLong(keyLaunchCount,tmp+1);
-    prefs.flush();
+    if (directFlush) prefs.flush();
     return this;
   }
   
@@ -141,7 +144,7 @@ public class TrialPeriod {
     prefs.remove(keyLaunchCount);
     prefs.remove(keyFirstLaunch);
     prefs.remove(keyState);
-    prefs.flush();
+    if (directFlush) prefs.flush();
   }
   
   /**
@@ -160,6 +163,6 @@ public class TrialPeriod {
    */
   public void setState(int state) {
     prefs.putInteger(keyState,state);
-    prefs.flush();
+    if (directFlush) prefs.flush();
   }
 }

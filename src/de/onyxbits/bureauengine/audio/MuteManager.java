@@ -16,6 +16,7 @@ public class MuteManager {
 
   private boolean musicMuted;
   private boolean soundMuted;
+  private boolean directFlush;
   private Preferences preferences;
   private String keyMusic;
   private String keySound;
@@ -29,7 +30,7 @@ public class MuteManager {
     soundMuted=mute;
     if (preferences!=null) {
       preferences.putBoolean(keySound,soundMuted);
-      preferences.flush();
+      if (directFlush) preferences.flush();
     }
     for (MuteListener m:listeners) m.muteSound(soundMuted);
   }
@@ -42,7 +43,7 @@ public class MuteManager {
     musicMuted=mute;
     if (preferences!=null) {
       preferences.putBoolean(keyMusic,musicMuted);
-      preferences.flush();
+      if (directFlush) preferences.flush();
     }
     for (MuteListener m:listeners) m.muteMusic(musicMuted);
   }
@@ -108,15 +109,18 @@ public class MuteManager {
    * Connect the manager with a persistant storage for keeping settings in between runs.
    * Whenever a new storage is set, its settings are read and listeners are notified.
    * @param p the storage object. May be null to not sync with a storage.
+   * @param directFlush whether or not to call <code>Preferences.flush()</code> when changing
+   * a setting. 
    * @param keyMusic key name for storing the music setting.
    * @param keySound key name for storing the sound setting.
    */
-  public void persistWith(Preferences p, String keyMusic, String keySound) {
+  public void persistWith(Preferences p, boolean directFlush, String keyMusic, String keySound) {
     preferences=p;
     if (preferences!=null) {
       if (keyMusic==null || keySound == null) throw new NullPointerException("keys may not be null!");
       this.keyMusic=keyMusic;
       this.keySound=keySound;
+      this.directFlush=directFlush;
       soundMuted = preferences.getBoolean(keySound,soundMuted);
       musicMuted = preferences.getBoolean(keyMusic,musicMuted);
     }

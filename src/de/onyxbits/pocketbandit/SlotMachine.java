@@ -31,20 +31,15 @@ public class SlotMachine extends BureauGame {
   public LinkHandler linkHandler;
   public Loader loader;
   
-  protected MuteManager createMuteManager() {
-    MuteManager ret = new MuteManager();
-    ret.persistWith(Gdx.app.getPreferences(PREFSNAME),"MuteManager.musicMuted","MuteManager.soundMuted");
-    return ret;
-  }
-  
-  protected BureauScreen createStartUpScreen() {
-    fadeOverScreen = new FadeOverScreen();
+  protected void bootGame() {
     prefs = Gdx.app.getPreferences(SlotMachine.PREFSNAME);
+    fadeOverScreen = new FadeOverScreen();
     loader=new Loader(prefs);
     loader.rescan();
-   
+    linkHandler = new LinkHandler();
+
     if (Gdx.files.internal("playstore.txt").exists()) {
-      trialPeriod = new TrialPeriod(Gdx.app.getPreferences(PREFSNAME),"trial.count","trial.first","trial.state");
+      trialPeriod = new TrialPeriod(prefs,false,"trial.count","trial.first","trial.state");
       if (trialPeriod.getState()==TrialPeriod.UNKNOWN) {
         // First launch -> set the trial active
         trialPeriod.setState(TrialPeriod.INPROGRESS);
@@ -54,9 +49,15 @@ public class SlotMachine extends BureauGame {
         trialPeriod.trialed(); 
       }
     }
-    
-    linkHandler = new LinkHandler();
-    
+  }
+  
+  protected MuteManager createMuteManager() {
+    MuteManager ret = new MuteManager();
+    ret.persistWith(prefs,false,"MuteManager.musicMuted","MuteManager.soundMuted");
+    return ret;
+  }
+  
+  protected BureauScreen createStartUpScreen() {
     assetManager.load("textures/global.atlas",TextureAtlas.class);
     assetManager.finishLoading();
     TextureAtlas globalAtlas= assetManager.get("textures/global.atlas",TextureAtlas.class);
@@ -75,7 +76,7 @@ public class SlotMachine extends BureauGame {
     ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
     scrollPaneStyle.background = new NinePatchDrawable(new NinePatch(globalAtlas.findRegion("roundbox_grey"),8,8,8,8));
     skin.add("default",scrollPaneStyle);
-    
+
     return new MenuScreen<SlotMachine>(this);
   }
   

@@ -21,7 +21,7 @@ import de.onyxbits.bureauengine.screen.BureauScreen;
 
 /**
  * A game that consists of several more or less independant screens between which
- * the player can navigate
+ * the player can navigate.
  */
 public abstract class BureauGame extends Game {
 
@@ -50,11 +50,19 @@ public abstract class BureauGame extends Game {
     super.dispose();
     if (spriteBatch!=null) spriteBatch.dispose();
     if (assetManager!=null) assetManager.dispose();
-    if (getScreen()!=null) getScreen().dispose();
   }
   
+  /**
+   * The game is booted in this order:<p>
+   * <code>bootGame()</code>
+   * <code>create*Manager()</code>
+   * <code>createFirstScreen()</code>
+   * <p>
+   * Afterwards the first screen is directly shown.
+   */
   @Override
   public void create() {
+    bootGame();
     spriteBatch = createSpriteBatch();
     assetManager = createAssetManager();
     muteManager = createMuteManager();
@@ -75,6 +83,11 @@ public abstract class BureauGame extends Game {
   
   public void pause() {
   }
+  
+  /**
+   * Called as the first method. Default implementation does nothing.
+   */
+  protected void bootGame() {}
   
   /**
    * Get the screen that is to show on game startup
