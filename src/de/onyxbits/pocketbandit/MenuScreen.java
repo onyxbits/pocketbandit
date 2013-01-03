@@ -113,8 +113,7 @@ public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implement
     if (isOver && actor==startGame && input.getType().equals(InputEvent.Type.touchUp)) {
       Variation v = game.loader.getDefault();
       Player p = new Player(v);   
-      SlotMachine.fadeOverScreen.configure(game,this,new GambleScreen<SlotMachine>(game,p,v),0.5f);
-      game.setScreen(SlotMachine.fadeOverScreen);
+      SlotMachine.fadeOverScreen.fadeTo(new GambleScreen<SlotMachine>(game,p,v),0.5f);
     }
     
     if (isOver && actor==showCredits && input.getType().equals(InputEvent.Type.touchUp)) {
@@ -123,8 +122,7 @@ public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implement
     
     if (isOver && actor==settings && input.getType().equals(InputEvent.Type.touchUp)) {
       Variation v = game.loader.getDefault();
-      SlotMachine.fadeOverScreen.configure(game,this,new GambleScreen<SlotMachine>(game,null,v),0.5f);
-      game.setScreen(SlotMachine.fadeOverScreen);
+      SlotMachine.fadeOverScreen.fadeTo(new GambleScreen<SlotMachine>(game,null,v),0.5f);
     }
     
     if (isOver && actor==trialLater && input.getType().equals(InputEvent.Type.touchUp)) {

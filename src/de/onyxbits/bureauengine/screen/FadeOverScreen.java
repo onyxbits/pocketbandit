@@ -18,7 +18,8 @@ import de.onyxbits.bureauengine.BureauGame;
  */
 public class FadeOverScreen implements Screen {
 
-  private BureauScreen fromScreen;
+  private Screen fromScreen;
+  private Music fromScreenMusic;
   private BureauScreen toScreen;
   private BureauGame game;
   private int state;
@@ -70,22 +71,24 @@ public class FadeOverScreen implements Screen {
   private Texture blankTexture;
   
   /**
-   * Set the transition up
-   * @param game callback into the game
-   * @param fromScreen the <code>Screen</code> to transition away from
-   * @param toScreen the <code>Screen</code> to transit to.
-   * @param time time for fading in/out in seconds.
+   * Fade over to another screen
+   * @param toScreen target screen. 
+   * @param time time in seconds for how long the fading in/out takes each.
    */
-  public void configure(BureauGame game, BureauScreen fromScreen, BureauScreen toScreen, float time) {
-    this.fromScreen=fromScreen;
+  public void fadeTo(BureauScreen toScreen, float time) {
     this.toScreen=toScreen;
-    this.game=game;
+    this.game=toScreen.game;
+    this.fromScreen=game.getScreen();
+    if (fromScreen instanceof BureauScreen) {
+      fromScreenMusic=((BureauScreen)fromScreen).music;
+    }
     state=START;
     screenWidth=Gdx.graphics.getWidth();
     screenHeight=Gdx.graphics.getWidth();
     fadeDuration=time;
     fadePercent=0;
     fadeTime=0;
+    game.setScreen(this);
   }
   
   @Override
@@ -109,8 +112,8 @@ public class FadeOverScreen implements Screen {
         // without the player noticing.
         fadePercent=0;
         fadeTime=0;
-        if (fromScreen.music!=null) {
-          fromScreen.music.stop();
+        if (fromScreenMusic!=null) {
+          fromScreenMusic.stop();
         }
         toScreen.prepareAssets(true); 
         toScreen.readyScreen();
@@ -168,8 +171,8 @@ public class FadeOverScreen implements Screen {
     Color tmp = game.spriteBatch.getColor();
     // Apply the effect
     if (state==FADEOUT) {
-      if (fromScreen.music!=null) {
-        fromScreen.music.setVolume(1f-fadePercent);
+      if (fromScreenMusic!=null) {
+        fromScreenMusic.setVolume(1f-fadePercent);
       }
       game.spriteBatch.begin();
       game.spriteBatch.setColor(0,0,0,fadePercent);

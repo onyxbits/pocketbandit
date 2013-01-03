@@ -491,7 +491,7 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     } 
     
     if (isOver && actor==exit && input.getType().equals(InputEvent.Type.touchUp)) {
-      SlotMachine.fadeOverScreen.configure(game,this,new MenuScreen<SlotMachine>(game),0.5f);
+      SlotMachine.fadeOverScreen.fadeTo(new MenuScreen<SlotMachine>(game),0.5f);
       game.setScreen(SlotMachine.fadeOverScreen);
     }
     
