@@ -68,7 +68,9 @@ public abstract class BureauGame extends Game {
   
   @Override
   public void resume() {
-    assetManager.finishLoading();
+    if (assetManager!=null) {
+      assetManager.finishLoading();
+    }
   }
   
   public void pause() {
