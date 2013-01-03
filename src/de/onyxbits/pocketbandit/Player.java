@@ -86,15 +86,6 @@ public class Player {
   }
   
   /**
-   * Persist credits and highscore for the current variation
-   */
-  public void persist() {
-    prefs.putInteger(toKey(true),credit);
-    prefs.putInteger(toKey(false),highscore);
-    prefs.flush();
-  }
-  
-  /**
    * Make a bet (must be called before setting the reels in motion): Transfer funds from
    * the cash on hand into the escalator, adjust the <code>freeloadCounter</code> accordingly.
    * @param amount number of coins to transfer from <code>credit</code> to <code>bet</code>
@@ -112,16 +103,19 @@ public class Player {
   
   /**
    * Mark up the current round as lost.
+   * Note: credits and highscroe are persisted, but preferences have to be flushed externally.
    */
   public void loose() {
     bet=0;
     streakOfBadLuck++;
     streakOfLuck=0;
+    prefs.putInteger(toKey(true),credit);
+    prefs.putInteger(toKey(false),highscore);
   }
   
   /**
    * Mark up the current round as won: add the prize to the credits and reset the <code>lostRounds</code>
-   * counter.
+   * counter. Note: credits and highscroe are persisted, but preferences have to be flushed externally.
    * @param prize how much to add to the credits
    * @param jpot true to also payout the jackpot.
    */
@@ -130,6 +124,8 @@ public class Player {
     streakOfBadLuck=0;
     streakOfLuck++;
     if (credit>highscore) highscore=credit;
+    prefs.putInteger(toKey(true),credit);
+    prefs.putInteger(toKey(false),highscore);
   }
   
 }

@@ -14,6 +14,11 @@ import java.util.Arrays;
 public class Variation {
 
   /**
+   * Cached list of rule definitions
+   */
+  private static String[] cachedRules;
+   
+  /**
    * Name (and order) of the symbol textures
    */
   public String symbolNames[];
@@ -145,15 +150,17 @@ public class Variation {
    * @return the names of the available rule files (sorted alphabetically)
    */
   public static String[] listVariations() {
-    FileHandle fh[] = Gdx.files.internal("rules").list();
-    String[] ret = new String[fh.length];
-    for (int i=0;i<fh.length;i++) {
-      ret[i]=fh[i].path();
+      if (cachedRules==null) {
+      FileHandle fh[] = Gdx.files.internal("rules").list();
+      cachedRules = new String[fh.length];
+      for (int i=0;i<fh.length;i++) {
+        cachedRules[i]=fh[i].path();
+      }
+      // FIXME: Filenames can be totally different from machinenames. All this
+      // sorting does is to make sure that the same order is maintained
+      Arrays.sort(cachedRules);
     }
-    // FIXME: Filenames can be totally different from machinenames. All this
-    // sorting does is to make sure that the same order is maintained
-    Arrays.sort(ret);
-    return ret;
+    return cachedRules;
   }
   
   /**
@@ -177,7 +184,9 @@ public class Variation {
   }
   
   /**
-   * Make the next in list variation the default one and load it
+   * Make the next in list variation the default one and load it. Note:
+   * selection is saved to the preferences, but <code>Preferences.flush()</code>
+   * must be called externally.
    * @return the variation that comes alphabetically after the current one
    */
   public static Variation loadNextVariation() {
@@ -198,7 +207,9 @@ public class Variation {
   }
   
   /**
-   * Make the previous in list variation the default one and load it
+   * Make the previous in list variation the default one and load it. Note:
+   * selection is saved to the preferences, but <code>Preferences.flush()</code>
+   * must be called externally.
    * @return the variation that comes alphabetically before the current one
    */
   public static Variation loadPreviousVariation() {
@@ -211,7 +222,6 @@ public class Variation {
         i--;
         if (i<=0) i=rules.length-1;
         prefs.putString(KEYNAME,rules[i]);
-        prefs.flush();
         break;
       }
     }

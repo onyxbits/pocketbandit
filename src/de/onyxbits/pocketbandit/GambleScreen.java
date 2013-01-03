@@ -428,6 +428,14 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
   }
   
   @Override
+  public void hide() {
+    // FIXME: Ideally, we would do this in the fade over animation when the screen is blank,
+    // but there's no infrastructure for that. Flushing here means that we delay a bit longer
+    // till the new screen gets input focus.
+    Gdx.app.getPreferences(SlotMachine.PREFSNAME).flush();
+  }
+  
+  @Override
   public void dispose() {
     super.dispose();
     if (triggerSound!=null) triggerSound.dispose();
@@ -485,9 +493,6 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     } 
     
     if (isOver && actor==exit && input.getType().equals(InputEvent.Type.touchUp)) {
-      // NOTE: persisting should probably be done transparently in Player.win() ans Player.loose(),
-      // but im not compfortable with writing often on flash memory.
-      if (player!=null) player.persist();
       fadeOverScreen.configure(game,this,new MenuScreen<SlotMachine>(game),0.5f);
       game.setScreen(fadeOverScreen);
     }

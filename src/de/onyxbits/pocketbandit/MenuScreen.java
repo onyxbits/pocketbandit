@@ -244,4 +244,12 @@ public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implement
     game.spriteBatch.end();
   }
   
+    
+  @Override
+  public void hide() {
+    // FIXME: Ideally, we would do this in the fade over animation when the screen is blank,
+    // but there's no infrastructure for that. Flushing here means that we delay a bit longer
+    // till the new screen gets input focus.
+    Gdx.app.getPreferences(SlotMachine.PREFSNAME).flush();
+  }
 }
