@@ -151,37 +151,33 @@ public class FadeOverScreen implements Screen {
    * @return true when the screen is fully faded.
    */
   private boolean fade(float delta) {
-    if (fadePercent>=1) return true;
-
-    // Calculate progress by accumulating delta time.
     fadeTime += delta;
-    if (fadeTime>=fadeDuration) fadePercent = 1;
+    if (fadeTime>=fadeDuration) {
+      fadePercent = 1;
+    }
     else {
       fadePercent = fadeTime / fadeDuration;
     }
     
     Color tmp = game.spriteBatch.getColor();
-    // Apply the effect
+    game.spriteBatch.begin();
     if (state==FADEOUT) {
       if ((fromScreen instanceof BureauScreen) && ((BureauScreen)fromScreen).music!=null) {
         ((BureauScreen)fromScreen).music.setVolume(1f-fadePercent);
       }
-      game.spriteBatch.begin();
       game.spriteBatch.setColor(0,0,0,fadePercent);
-      game.spriteBatch.draw(blankTexture,0,0,screenWidth,screenHeight);
-      game.spriteBatch.end();
     }
     if (state==FADEIN) {
       if (toScreen.music!=null) {
         toScreen.music.setVolume(fadePercent);
       }
-      game.spriteBatch.begin();
       game.spriteBatch.setColor(0,0,0,1f-fadePercent);
-      game.spriteBatch.draw(blankTexture,0,0,screenWidth,screenHeight);
-      game.spriteBatch.end();
     }
+    game.spriteBatch.draw(blankTexture,0,0,screenWidth,screenHeight);
+    game.spriteBatch.end();
     game.spriteBatch.setColor(tmp);
-    return fadePercent>=1;
+    
+    return fadePercent==1;
   }
   
   /**
