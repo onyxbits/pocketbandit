@@ -14,7 +14,7 @@ import de.onyxbits.bureauengine.BureauGame;
 /**
  * Implements a fading over effect between two screens (fade to black, fade from black). Note:
  * music is faded as well, meaning, this class will manipulate the <code>Music</code> object
- * on hte target screen, potentially setting it to null or even replacing it.
+ * on the target screen, potentially setting it to null or even replacing it.
  */
 public class FadeOverScreen implements Screen {
 
@@ -38,11 +38,6 @@ public class FadeOverScreen implements Screen {
    * Progress status of the fading process
    */
   private float fadePercent;
-  
-  /**
-   * Fading state
-   */
-  private static final int START=0;
   
   /**
    * Fading state
@@ -78,24 +73,19 @@ public class FadeOverScreen implements Screen {
     this.toScreen=toScreen;
     this.game=toScreen.game;
     this.fromScreen=game.getScreen(); // If this is null, someone is using the engine in a funky way.
-    state=START;
+    state=FADEOUT;
     screenWidth=Gdx.graphics.getWidth();
     screenHeight=Gdx.graphics.getWidth();
     fadeDuration=time;
     fadePercent=0;
     fadeTime=0;
+    Gdx.input.setInputProcessor(null);
     game.setScreen(this);
   }
   
   @Override
   public void render(float delta) {
     switch(state) {
-      case START: {
-        Gdx.input.setInputProcessor(null);
-        fromScreen.render(delta);
-        state=FADEOUT;
-        break;
-      }
       case FADEOUT: {
         fromScreen.render(delta);
         if (fade(delta)) {
@@ -127,6 +117,9 @@ public class FadeOverScreen implements Screen {
         // Skip the first frame on toScreen. We have to do this since textures can only be loaded
         // on the GL thread, potentially stalling it and resulting in a spike in delta time. Such
         // spikes mess with the fading math. Easiest way to compensate is by throwing one frame away.
+        // Note: an alternative approach would be to call AssetManager.update() on every odd frame while
+        // fading out and skip the actual rendering for those frames. However, tests showed that this
+        // produces very choppy fading.
         state=FADEIN;
         break;
       }
