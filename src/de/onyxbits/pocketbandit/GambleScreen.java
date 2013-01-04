@@ -406,7 +406,7 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     // to keep in sync with dynamically updated information
     if (player==null) {
       Player tmp = game.loader.getPlayer(variant);
-      tmp.sitDown();
+      tmp.reVisit();
       paytable.add("- - - - - - - - - - - - - - - - -").colspan(5).center();
       paytable.row();
       paytable.add("Seed capital").colspan(4).left();

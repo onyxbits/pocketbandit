@@ -68,11 +68,15 @@ public class Player {
   }
   
   /**
-   * Player takes a seat at the machine. After sitting down, s/he has either his/her previous
-   * cash or the seed capital on hand (whichever is higher).
+   * Player comes back to the machine. That is, s/he starts with zeroed counters and either
+   * the seed capital or previous cash (whichever is higher.
    */
-  public void sitDown() {
+  public void reVisit() {
     credit = Math.max(credit,variation.seedCapital);
+    freeloaderCount=0;
+    streakOfLuck=0;
+    streakOfBadLuck=0;
+    round=0;
   }
    
   
