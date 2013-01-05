@@ -59,7 +59,6 @@ public class TrialPeriod {
   public static final int ENDEDNEGATIVELY = ENDED | NEGATIVE;
 
   private Preferences prefs;
-  private boolean directFlush;
   private String keyLaunchCount;
   private String keyFirstLaunch;
   private String keyState;
@@ -74,12 +73,11 @@ public class TrialPeriod {
    * @param keyFirstLaunch name of the key with which to record the date of the first launch
    * @param keyActive name of the key with which to store the state.
    */
-  public TrialPeriod(Preferences prefs, boolean directFlush, String keyLaunchCount, String keyFirstLaunch, String keyState) {
+  public TrialPeriod(Preferences prefs, String keyLaunchCount, String keyFirstLaunch, String keyState) {
     if (prefs==null || keyLaunchCount==null || keyFirstLaunch == null || keyState==null) {
       throw new NullPointerException(); // Crash early
     }
     this.prefs=prefs;
-    this.directFlush = directFlush;
     this.keyLaunchCount=keyLaunchCount;
     this.keyFirstLaunch=keyFirstLaunch;
     this.keyState=keyState;
@@ -133,7 +131,7 @@ public class TrialPeriod {
     }
     tmp = prefs.getLong(keyLaunchCount,0);
     prefs.putLong(keyLaunchCount,tmp+1);
-    if (directFlush) prefs.flush();
+    prefs.flush();
     return this;
   }
   
@@ -144,7 +142,7 @@ public class TrialPeriod {
     prefs.remove(keyLaunchCount);
     prefs.remove(keyFirstLaunch);
     prefs.remove(keyState);
-    if (directFlush) prefs.flush();
+    prefs.flush();
   }
   
   /**
@@ -163,6 +161,6 @@ public class TrialPeriod {
    */
   public void setState(int state) {
     prefs.putInteger(keyState,state);
-    if (directFlush) prefs.flush();
+    prefs.flush();
   }
 }
