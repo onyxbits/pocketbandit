@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.*;
 
+import java.util.*;
+
 import de.onyxbits.bureauengine.*;
 import de.onyxbits.bureauengine.util.*;
 import de.onyxbits.bureauengine.audio.*;
@@ -30,17 +32,25 @@ public class SlotMachine extends BureauGame {
     loader=new Loader(prefs);
     loader.rescan();
     linkHandler = new LinkHandler();
-
-    if (Gdx.files.internal("playstore.txt").exists()) {
-      trialPeriod = new TrialPeriod(prefs,"trial.count","trial.first","trial.state");
-      if (trialPeriod.getState()==TrialPeriod.UNKNOWN) {
-        // First launch -> set the trial active
-        trialPeriod.setState(TrialPeriod.INPROGRESS);
+    
+    try {
+      Properties prop = new Properties();
+      prop.load(Gdx.files.internal("build.properties").read(512));
+      if (prop.getProperty("dist.channel").equals("googleplay")) {
+        trialPeriod = new TrialPeriod(prefs,"trial.count","trial.first","trial.state");
+        if (trialPeriod.getState()==TrialPeriod.UNKNOWN) {
+          // First launch -> set the trial active
+          trialPeriod.setState(TrialPeriod.INPROGRESS);
+        }
+        if ( (trialPeriod.getState() & TrialPeriod.ENDED) != TrialPeriod.ENDED) {
+          // We only count when the period is not over.
+          trialPeriod.trialed(); 
+        }
       }
-      if ( (trialPeriod.getState() & TrialPeriod.ENDED) != TrialPeriod.ENDED) {
-        // We only count when the period is not over.
-        trialPeriod.trialed(); 
-      }
+    }
+    catch (Exception e) {
+      // Don't care
+      Gdx.app.error("PocketBandit","No build.properties?",e);
     }
   }
   

@@ -14,3 +14,4 @@ libs/*
 compiled/
 compiled/*
 local.properties
+assets/build.properties
