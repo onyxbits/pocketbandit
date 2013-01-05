@@ -32,7 +32,7 @@ public class SlotMachine extends BureauGame {
     linkHandler = new LinkHandler();
 
     if (Gdx.files.internal("playstore.txt").exists()) {
-      trialPeriod = new TrialPeriod(prefs,false,"trial.count","trial.first","trial.state");
+      trialPeriod = new TrialPeriod(prefs,"trial.count","trial.first","trial.state");
       if (trialPeriod.getState()==TrialPeriod.UNKNOWN) {
         // First launch -> set the trial active
         trialPeriod.setState(TrialPeriod.INPROGRESS);
