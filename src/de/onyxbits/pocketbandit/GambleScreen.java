@@ -232,7 +232,7 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
    
     knob = new Image(localAtlas.findRegion("spr_knob"));
     knob.setPosition(235,219);
-    KnobHandler handler = new KnobHandler(this,true,240,69);
+    KnobHandler handler = new KnobHandler(this,240,69);
     knob.addListener(handler);
     handler.restKnob(knob);
     deviceGroup.addActor(knob);

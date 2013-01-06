@@ -79,24 +79,17 @@ class KnobHandler extends DragListener {
   private int timeDiff;
   
   /**
-   * Whether or not reels may be stopped
-   */
-  private boolean allowBrakes;
-  
-  /**
    * Construct a new handler.
    * @param gambleScreen callback reference
-   * @param allowBrakes whether or nor reesl can be stopped.
    * @param player game state
    * @param topLimitStop max vertical coordinate of the knob
    * @param bottomLimitStop min vertical coordinate of the knob
    */
-  public KnobHandler(GambleScreen gambleScreen, boolean allowBrakes, float topLimitStop, float bottomLimitStop) {
+  public KnobHandler(GambleScreen gambleScreen, float topLimitStop, float bottomLimitStop) {
     this.gambleScreen=gambleScreen;
     this.player=player;
     this.topLimitStop=topLimitStop;
     this.bottomLimitStop=bottomLimitStop;
-    this.allowBrakes=allowBrakes;
     float length=topLimitStop-bottomLimitStop;
     restPoint=bottomLimitStop+length*0.88f;
     triggerPoint=bottomLimitStop+length*0.20f;
@@ -129,7 +122,7 @@ class KnobHandler extends DragListener {
       timeDiff=(int) (TimeUtils.millis()-startTime);
     }
     
-    if (allowBrakes && actor.getY()>brakePoint && !stopped && gambleScreen.isSpinning()) {
+    if (actor.getY()>brakePoint && !stopped && gambleScreen.isSpinning()) {
       stopped=true;
       gambleScreen.playSoundEffect(GambleScreen.TRIGGERSOUND);
       gambleScreen.brakeWheels();
