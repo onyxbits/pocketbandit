@@ -120,6 +120,7 @@ public class Player {
     bet=0;
     streakOfBadLuck++;
     streakOfLuck=0;
+    round++;
     SlotMachine.prefs.putInteger(toKey(true),credit);
     SlotMachine.prefs.putInteger(toKey(false),highscore);
   }
@@ -134,6 +135,7 @@ public class Player {
     credit+=prize;
     streakOfBadLuck=0;
     streakOfLuck++;
+    round++;
     if (credit>highscore) highscore=credit;
     SlotMachine.prefs.putInteger(toKey(true),credit);
     SlotMachine.prefs.putInteger(toKey(false),highscore);
