@@ -409,6 +409,14 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
       tmp.reVisit();
       paytable.add("- - - - - - - - - - - - - - - - -").colspan(5).center();
       paytable.row();
+      paytable.add("Lucky bet bonus").colspan(4).left();
+      if (variant.luckyCoinBonus !=1) {
+        paytable.add(variant.luckyCoinBonus+" coins").right();
+      }
+      else {
+        paytable.add(variant.luckyCoinBonus+" coin ").right();
+      }
+      paytable.row();
       paytable.add("Seed capital").colspan(4).left();
       paytable.add(variant.seedCapital+" coins").right();
       paytable.row();
@@ -528,15 +536,43 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     
     // All reels stopped -> evaluate
     if (spinning==0) {
+<<<<<<< HEAD:src/de/onyxbits/pocketbandit/GambleScreen.java
       // A round may be played without betting, so we need to simulate a bet first and only
       // if that pays out, we calculate the real payout.
+=======
+    
+      // Is the player eligable for a bonus?
+      boolean luckyBet=bet[player.luckyCoin].isChecked();
+      
+      System.err.println(player.luckyCoin);
+      
+      // A round may be played without betting, so simulate a bet to find out for sure if the player
+      // won or lost.
+>>>>>>> luckycoin:src/de/onyxbits/pocketbandit/GambleScreen.java
       if (variation.getPayout(1,player.payline)>0) {
         int win = variation.getPayout(player.bet,player.payline);
+<<<<<<< HEAD:src/de/onyxbits/pocketbandit/GambleScreen.java
         feedbackMessage.setText("+ "+win);
         float centerPos = stage.getWidth()/2-(feedbackMessage.getWidth()+10+feedbackSymbol.getWidth())/2;
         feedbackGroup.addAction(sequence(moveTo(centerPos,85),fadeIn(0.4f),moveBy(0,-50,1f),fadeOut(0.4f)));
         playSoundEffect(WINSOUND);
         player.win(win);
+=======
+        if (win>0) {
+          if(win>0 && luckyBet) {
+            feedbackMessage.setText("+ "+win+"\n+ "+variation.luckyCoinBonus);
+            player.win(win+variation.luckyCoinBonus);
+          }
+          else {
+            feedbackMessage.setText("+ "+win);
+            player.win(win);
+          }
+          // NOTE: Actions from static import
+          float centerPos = stage.getWidth()/2-(feedbackMessage.getWidth()+10+feedbackSymbol.getWidth())/2;
+          feedbackGroup.addAction(sequence(moveTo(centerPos,85),fadeIn(0.4f),moveBy(0,-50,1f),fadeOut(0.4f)));
+          playSoundEffect(WINSOUND);
+        }
+>>>>>>> luckycoin:src/de/onyxbits/pocketbandit/GambleScreen.java
       }
       else {
         player.loose();

@@ -47,6 +47,16 @@ public class Variation {
   public int seedCapital=0;
   
   /**
+   * Bonus payout when the lucky coin is played
+   */
+  public int luckyCoinBonus = 1;
+  
+  /**
+   * After how many rounds the lucky coin is rerolled
+   */
+  public int luckyCoinReRoll = 10;
+  
+  /**
    * For debugging only : not so random random picks
    */
   private int[] symbolSequence;

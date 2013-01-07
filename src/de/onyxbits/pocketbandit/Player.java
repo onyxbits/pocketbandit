@@ -15,6 +15,11 @@ public class Player {
   protected int round;
   
   /**
+   * Index (0-3) indicating which coin is the lucky coin
+   */
+  protected int luckyCoin;
+  
+  /**
    * How much money does the player currently have on hand?
    */
   protected int credit;
@@ -65,6 +70,7 @@ public class Player {
     // We start out with either the seed capital or the previous winnings. Whichever is higher
     credit=Math.max(variation.seedCapital,SlotMachine.prefs.getInteger(toKey(true),0));
     highscore=SlotMachine.prefs.getInteger(toKey(false),credit);
+    luckyCoin = SlotMachine.rng.nextInt(3);
   }
   
   /**
@@ -77,6 +83,7 @@ public class Player {
     streakOfLuck=0;
     streakOfBadLuck=0;
     round=0;
+    luckyCoin = SlotMachine.rng.nextInt(3);
   }
    
   
@@ -118,11 +125,15 @@ public class Player {
    */
   public void loose() {
     bet=0;
+    round++;
     streakOfBadLuck++;
     streakOfLuck=0;
     round++;
     SlotMachine.prefs.putInteger(toKey(true),credit);
     SlotMachine.prefs.putInteger(toKey(false),highscore);
+    if (round % variation.luckyCoinReRoll == 0) {
+      luckyCoin = SlotMachine.rng.nextInt(3);
+    }
   }
   
   /**
@@ -133,12 +144,15 @@ public class Player {
    */
   public void win(int prize) {
     bet=0;
+    round++;
     credit+=prize;
     streakOfBadLuck=0;
     streakOfLuck++;
-    round++;
     if (credit>highscore) highscore=credit;
     SlotMachine.prefs.putInteger(toKey(true),credit);
     SlotMachine.prefs.putInteger(toKey(false),highscore);
+    if (round % variation.luckyCoinReRoll == 0) {
+      luckyCoin = SlotMachine.rng.nextInt(3);
+    }
   }
 }
