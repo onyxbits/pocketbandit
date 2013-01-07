@@ -132,6 +132,7 @@ public class Player {
    * @param jpot true to also payout the jackpot.
    */
   public void win(int prize) {
+    bet=0;
     credit+=prize;
     streakOfBadLuck=0;
     streakOfLuck++;
