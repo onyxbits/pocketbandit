@@ -538,7 +538,7 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     if (spinning==0) {
     
       // Is the player eligable for a bonus?
-      boolean luckyBet=bet[player.luckyCoin].isChecked();
+      boolean luckyBet=bet[player.luckyCoin].isChecked() && SlotMachine.rng.nextInt(2)>0;
       
       // A round may be played without betting, so simulate a bet to find out for sure if the player
       // won or lost.
