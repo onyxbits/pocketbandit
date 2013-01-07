@@ -536,10 +536,6 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     
     // All reels stopped -> evaluate
     if (spinning==0) {
-<<<<<<< HEAD:src/de/onyxbits/pocketbandit/GambleScreen.java
-      // A round may be played without betting, so we need to simulate a bet first and only
-      // if that pays out, we calculate the real payout.
-=======
     
       // Is the player eligable for a bonus?
       boolean luckyBet=bet[player.luckyCoin].isChecked();
@@ -548,16 +544,8 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
       
       // A round may be played without betting, so simulate a bet to find out for sure if the player
       // won or lost.
->>>>>>> luckycoin:src/de/onyxbits/pocketbandit/GambleScreen.java
       if (variation.getPayout(1,player.payline)>0) {
         int win = variation.getPayout(player.bet,player.payline);
-<<<<<<< HEAD:src/de/onyxbits/pocketbandit/GambleScreen.java
-        feedbackMessage.setText("+ "+win);
-        float centerPos = stage.getWidth()/2-(feedbackMessage.getWidth()+10+feedbackSymbol.getWidth())/2;
-        feedbackGroup.addAction(sequence(moveTo(centerPos,85),fadeIn(0.4f),moveBy(0,-50,1f),fadeOut(0.4f)));
-        playSoundEffect(WINSOUND);
-        player.win(win);
-=======
         if (win>0) {
           if(win>0 && luckyBet) {
             feedbackMessage.setText("+ "+win+"\n+ "+variation.luckyCoinBonus);
@@ -572,9 +560,9 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
           feedbackGroup.addAction(sequence(moveTo(centerPos,85),fadeIn(0.4f),moveBy(0,-50,1f),fadeOut(0.4f)));
           playSoundEffect(WINSOUND);
         }
->>>>>>> luckycoin:src/de/onyxbits/pocketbandit/GambleScreen.java
       }
       else {
+        // Player lost the round
         player.loose();
       }
       
