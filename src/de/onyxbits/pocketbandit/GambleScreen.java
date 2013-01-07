@@ -530,21 +530,21 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     if (spinning==0) {
       // A round may be played without betting, so simulate a bet to find out for sure if the player
       // won or lost.
-      if (variation.getPayout(1,player.payline)>0) {
-        int win = variation.getPayout(player.bet,player.payline);
-        // No bet -> no bling
+      boolean wouldWin = variation.getPayout(1,player.payline)>0;
+      int win = variation.getPayout(player.bet,player.payline);
+      if (wouldWin) {
         if (win>0) {
           feedbackMessage.setText("+ "+win);
-          // NOTE: Actions from static import
-          float centerPos = stage.getWidth()/2-(feedbackMessage.getWidth()+10+feedbackSymbol.getWidth())/2;
-          feedbackGroup.addAction(sequence(moveTo(centerPos,85),fadeIn(0.4f),moveBy(0,-50,1f),fadeOut(0.4f)));
-          playSoundEffect(WINSOUND);
         }
-        // But it still counts towards the statistics
+        else {
+          feedbackMessage.setText("No Bet!");
+        }
+        float centerPos = stage.getWidth()/2-(feedbackMessage.getWidth()+10+feedbackSymbol.getWidth())/2;
+        feedbackGroup.addAction(sequence(moveTo(centerPos,85),fadeIn(0.4f),moveBy(0,-50,1f),fadeOut(0.4f)));
+        playSoundEffect(WINSOUND);
         player.win(win);
       }
       else {
-        // Player lost the round
         player.loose();
       }
       
