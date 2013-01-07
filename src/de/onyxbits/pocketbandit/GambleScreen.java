@@ -409,7 +409,7 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
       tmp.reVisit();
       paytable.add("- - - - - - - - - - - - - - - - -").colspan(5).center();
       paytable.row();
-      paytable.add("Lucky bet bonus").colspan(4).left();
+      paytable.add("Lucky Bonus").colspan(4).left();
       if (variant.luckyCoinBonus !=1) {
         paytable.add(variant.luckyCoinBonus+" coins").right();
       }
@@ -538,7 +538,7 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     if (spinning==0) {
     
       // Is the player eligable for a bonus?
-      boolean luckyBet=bet[player.luckyCoin].isChecked() && SlotMachine.rng.nextInt(2)>0;
+      boolean luckyBet=bet[player.luckyCoin].isChecked() && SlotMachine.rng.nextFloat()<=variation.luckyCoinChance;
       
       // A round may be played without betting, so simulate a bet to find out for sure if the player
       // won or lost.

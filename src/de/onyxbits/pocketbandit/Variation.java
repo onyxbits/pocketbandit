@@ -57,6 +57,12 @@ public class Variation {
   public int luckyCoinReRoll = 10;
   
   /**
+   * Chance for the lucky coin bonus being awarded, if the player actually
+   * bet the right coin.
+   */
+  public float luckyCoinChance=0.5f;
+  
+  /**
    * For debugging only : not so random random picks
    */
   private int[] symbolSequence;
