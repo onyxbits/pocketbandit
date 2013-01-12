@@ -7,7 +7,7 @@
 rm -r $1/*.png
 rm ../assets/textures/$1.*
 
-for i in scaleable-art/menuscreen/*.svg; 
+for i in scaleable-art/$1/*.svg; 
   do inkscape -e $1/`basename $i .svg`.png $i; 
 done
 
