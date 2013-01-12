@@ -412,10 +412,12 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
       tmp.reVisit();
       paytable.add("- - - - - - - - - - - - - - - - -").colspan(5).center();
       paytable.row();
-      paytable.add("Lucky Bonus").colspan(4).left();
-      paytable.add(""+variant.luckyCoinBonus).right();
-      paytable.add(new Image(coin)).padLeft(4);
-      paytable.row();
+      if (variant.luckyCoinBonus>0) {
+        paytable.add("Lucky Bonus").colspan(4).left();
+        paytable.add(""+variant.luckyCoinBonus).right();
+        paytable.add(new Image(coin)).padLeft(4);
+        paytable.row();
+      }
       paytable.add("Seed capital").colspan(4).left();
       paytable.add(""+variant.seedCapital).right();
       paytable.add(new Image(coin)).padLeft(4);
@@ -540,7 +542,8 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     if (spinning==0) {
     
       // Is the player eligable for a bonus?
-      boolean luckyBet=bet[player.luckyCoin].isChecked(); //&& SlotMachine.rng.nextFloat()<=variation.luckyCoinChance;
+      int bonusPay = 0;
+      boolean luckyBet=bet[player.luckyCoin].isChecked() && (bonusPay=variation.getBonus(getBet()))>0;
       
       // A round may be played without betting, so simulate a bet to find out for sure if the player
       // won or lost.
@@ -548,11 +551,11 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
         int win = variation.getPayout(player.bet,player.payline);
         if (win>0) {
           if(win>0 && luckyBet) {
-            feedbackMessage.setText("+ "+win+"\n+ "+variation.luckyCoinBonus);
+            feedbackMessage.setText("+ "+win+"\n+ "+bonusPay);
             float ow= feedbackBonus.getWidth();
             float oh= feedbackBonus.getHeight();
             feedbackBonus.addAction(sequence(fadeIn(0.1f),delay(1),fadeOut(0.1f),sizeTo(ow,oh)));
-            player.win(win+variation.luckyCoinBonus);
+            player.win(win+bonusPay);
           }
           else {
             feedbackMessage.setText("+ "+win);

@@ -49,7 +49,7 @@ public class Variation {
   /**
    * Bonus payout when the lucky coin is played
    */
-  public int luckyCoinBonus = 1;
+  public int luckyCoinBonus = 0;
   
   /**
    * After how many rounds the lucky coin is rerolled
@@ -57,10 +57,11 @@ public class Variation {
   public int luckyCoinReRoll = 10;
   
   /**
-   * Chance for the lucky coin bonus being awarded, if the player actually
-   * bet the right coin.
+   * Chances for getting a bonus payout if the lucky coin is bet. This is a three member
+   * array. the first member cotnains the chance if only one coin is bet, the second if 
+   * two coins are bet and the third if all three coins are bet.
    */
-  public float luckyCoinChance=0.5f;
+  public float[] luckyCoinChance={0.5f, 0.25f, 0.125f};
   
   /**
    * For debugging only : not so random random picks
@@ -102,6 +103,20 @@ public class Variation {
   public int getPayout(int bet, int[] payline) {
     int tmp=match(payline);
     return tmp==-1 ? 0 : paytable[tmp][3]*bet;
+  }
+  
+  /**
+   * Get the bonus payout. This method calculates the bonus payout on the assumption that
+   * the lucky coin has been played.
+   * @param bet how many coins were bet (0-3)
+   * @return number of bonus coins to award (always 0 if no coins were bet).
+   */
+  public int getBonus(int bet) {
+    int ret =0;
+    if (bet>0 && bet <4 && SlotMachine.rng.nextFloat()<=luckyCoinChance[bet-1]) {
+      ret=luckyCoinBonus;
+    }
+    return ret;
   }
   
   /**
