@@ -64,6 +64,11 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
   private Group feedbackGroup;
   
   /**
+   * Notifies the player that s/he hit the lucky bonus
+   */
+  private Image feedbackBonus;
+  
+  /**
    * Switch between game view and options view
    */
   private ImageButton viewSwitch;
@@ -316,6 +321,11 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     feedbackGroup.addActor(feedbackSymbol);
     feedbackMessage.setPosition(10+feedbackSymbol.getWidth(),feedbackSymbol.getHeight()/2-feedbackMessage.getHeight()/2);
     feedbackGroup.getColor().a=0;
+    feedbackBonus = new Image(new TextureRegionDrawable(localAtlas.findRegion("spr_bonus")));
+    //feedbackBonus.setPosition(reelGroup.getX()+reelGroup.getWidth()/2-feedbackBonus.getMinWidth()/2, reelGroup.getY()+reelGroup.getHeight()/2-feedbackBonus.getMinHeight()/2);
+    //feedbackBonus.setPosition(reelGroup.getX(), reelGroup.getY());
+    //feedbackBonus.getColor().a=0;
+    deviceGroup.addActor(feedbackBonus);
     deviceGroup.addActor(feedbackGroup);
     
     deviceName = new Table(((SlotMachine)game).skin);
@@ -354,9 +364,7 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     scrollTable = new ScrollPane(null,((SlotMachine)game).skin);
     setVariant(variation);
     
-    //scrollTable.setSize(244,360);
     scrollTable.setOverscroll(true,true);
-    //scrollTable.setPosition(18,60);
     scrollTable.setBounds(10,68,320-30-48,334);
     
     if (player==null) {
@@ -532,7 +540,7 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     if (spinning==0) {
     
       // Is the player eligable for a bonus?
-      boolean luckyBet=bet[player.luckyCoin].isChecked() && SlotMachine.rng.nextFloat()<=variation.luckyCoinChance;
+      boolean luckyBet=bet[player.luckyCoin].isChecked(); //&& SlotMachine.rng.nextFloat()<=variation.luckyCoinChance;
       
       // A round may be played without betting, so simulate a bet to find out for sure if the player
       // won or lost.
@@ -541,13 +549,15 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
         if (win>0) {
           if(win>0 && luckyBet) {
             feedbackMessage.setText("+ "+win+"\n+ "+variation.luckyCoinBonus);
+            float ow= feedbackBonus.getWidth();
+            float oh= feedbackBonus.getHeight();
+            feedbackBonus.addAction(sequence(fadeIn(0.1f),delay(1),fadeOut(0.1f),sizeTo(ow,oh)));
             player.win(win+variation.luckyCoinBonus);
           }
           else {
             feedbackMessage.setText("+ "+win);
             player.win(win);
           }
-          // NOTE: Actions from static import
           float centerPos = stage.getWidth()/2-(feedbackMessage.getWidth()+10+feedbackSymbol.getWidth())/2;
           feedbackGroup.addAction(sequence(moveTo(centerPos,85),fadeIn(0.4f),moveBy(0,-50,1f),fadeOut(0.4f)));
           playSoundEffect(WINSOUND);

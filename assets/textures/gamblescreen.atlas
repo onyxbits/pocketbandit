@@ -5,287 +5,294 @@ filter: Nearest,Nearest
 repeat: none
 spr_frontpanel
   rotate: false
-  xy: 1, 85
+  xy: 1, 97
   size: 284, 414
   orig: 284, 414
   offset: 0, 0
   index: -1
 spr_background
   rotate: false
-  xy: 287, 355
+  xy: 287, 367
   size: 144, 144
   orig: 144, 144
   offset: 0, 0
   index: -1
+spr_bonus
+  rotate: false
+  xy: 1, 45
+  size: 160, 50
+  orig: 160, 50
+  offset: 0, 0
+  index: -1
 spr_knob
   rotate: false
-  xy: 1, 19
+  xy: 287, 301
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sym_bar
   rotate: false
-  xy: 287, 289
+  xy: 433, 447
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sym_bell
   rotate: false
-  xy: 433, 435
+  xy: 287, 235
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sym_cherry
   rotate: false
-  xy: 67, 19
+  xy: 353, 301
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sym_grapes
   rotate: false
-  xy: 287, 223
+  xy: 433, 381
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sym_lemon
   rotate: false
-  xy: 353, 289
+  xy: 287, 169
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sym_mellon
   rotate: false
-  xy: 433, 369
+  xy: 353, 235
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sym_orange
   rotate: false
-  xy: 133, 19
+  xy: 287, 103
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sym_plum
   rotate: false
-  xy: 287, 157
+  xy: 353, 169
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 sym_seven
   rotate: false
-  xy: 353, 223
+  xy: 353, 103
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 btn_bet_checked
   rotate: false
-  xy: 199, 35
+  xy: 163, 47
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 btn_bet_down
   rotate: false
-  xy: 287, 107
+  xy: 213, 47
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 btn_bet_up
   rotate: false
-  xy: 353, 173
+  xy: 263, 47
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 btn_left_down
   rotate: false
-  xy: 249, 51
+  xy: 1, 11
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_left_up
   rotate: false
-  xy: 287, 73
+  xy: 35, 11
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_musicmuted_checked
   rotate: false
-  xy: 283, 39
+  xy: 69, 11
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_musicmuted_down
   rotate: false
-  xy: 249, 17
+  xy: 103, 11
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_musicmuted_up
   rotate: false
-  xy: 283, 5
+  xy: 313, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_right_down
   rotate: false
-  xy: 337, 123
+  xy: 347, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_right_up
   rotate: false
-  xy: 403, 189
+  xy: 381, 69
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_soundmuted_checked
   rotate: false
-  xy: 321, 73
+  xy: 137, 11
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_soundmuted_down
   rotate: false
-  xy: 317, 39
+  xy: 171, 13
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_soundmuted_up
   rotate: false
-  xy: 317, 5
+  xy: 205, 13
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_view_checked
   rotate: false
-  xy: 199, 1
+  xy: 239, 13
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_view_down
   rotate: false
-  xy: 371, 139
+  xy: 273, 13
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 btn_view_up
   rotate: false
-  xy: 371, 105
+  xy: 313, 35
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 spr_cash
   rotate: false
-  xy: 405, 155
+  xy: 307, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 spr_feedbackcoins
   rotate: false
-  xy: 405, 121
+  xy: 341, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 spr_turns
   rotate: false
-  xy: 355, 71
+  xy: 347, 35
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sym_small_bar
   rotate: false
-  xy: 351, 37
+  xy: 375, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sym_small_bell
   rotate: false
-  xy: 351, 3
+  xy: 381, 35
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sym_small_cherry
   rotate: false
-  xy: 405, 87
+  xy: 409, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sym_small_grapes
   rotate: false
-  xy: 419, 321
+  xy: 419, 333
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sym_small_lemon
   rotate: false
-  xy: 419, 287
+  xy: 419, 299
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sym_small_mellon
   rotate: false
-  xy: 419, 253
+  xy: 419, 265
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sym_small_orange
   rotate: false
-  xy: 453, 335
+  xy: 419, 231
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sym_small_plum
   rotate: false
-  xy: 453, 301
+  xy: 419, 197
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sym_small_seven
   rotate: false
-  xy: 453, 267
+  xy: 419, 163
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 spr_small_cash
   rotate: false
-  xy: 1, 1
+  xy: 419, 145
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
