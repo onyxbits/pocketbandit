@@ -47,12 +47,13 @@ public class Variation {
   public int seedCapital=0;
   
   /**
-   * Bonus payout when the lucky coin is played
+   * Bonus payout when the lucky coin is played. A value of 0 or less is interpreted as
+   * "game does not have this feature".
    */
   public int luckyCoinBonus = 0;
   
   /**
-   * After how many rounds the lucky coin is rerolled
+   * After how many rounds the lucky coin is rerolled.
    */
   public int luckyCoinReRoll = 10;
   
@@ -98,11 +99,18 @@ public class Variation {
    * Calculate the payout for a given payline
    * @param bet how many coins (0-3) were bet
    * @param payline the three symbols on the payline (index into <code>symbolNames</code>
-   * @return amount of coins won (a bet of 0 always wins 0).
+   * @return -1 if the payline does not match the paytable ("player lost"). 0 if there
+   * is a match, but there was no wager. Any value greater zero is how much to add to the
+   * player'S casho on hand.
    */
   public int getPayout(int bet, int[] payline) {
     int tmp=match(payline);
-    return tmp==-1 ? 0 : paytable[tmp][3]*bet;
+    if (tmp==-1) {
+      return -1;
+    }
+    else {
+      return paytable[tmp][3]*bet;
+    }
   }
   
   /**

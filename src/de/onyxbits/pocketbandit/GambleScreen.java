@@ -540,34 +540,31 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     
     // All reels stopped -> evaluate
     if (spinning==0) {
-    
-      // Is the player eligable for a bonus?
-      int bonusPay = 0;
-      boolean luckyBet=bet[player.luckyCoin].isChecked() && (bonusPay=variation.getBonus(getBet()))>0;
-      
-      // A round may be played without betting, so simulate a bet to find out for sure if the player
-      // won or lost.
-      if (variation.getPayout(1,player.payline)>0) {
-        int win = variation.getPayout(player.bet,player.payline);
-        if (win>0) {
-          if(win>0 && luckyBet) {
+      int win=variation.getPayout(player.bet,player.payline);
+      if (win>=0) { // Player hit a winning combination...
+        if (win==0) { // but did not bet -> nothing won, but it still counts statistically.
+          feedbackMessage.setText("+ 0");
+          player.win(0);
+        }
+        else { // Player won for sure, but is s/he eligable for a bonus?
+          int bonusPay = 0;
+          if(bet[player.luckyCoin].isChecked() && (bonusPay=variation.getBonus(getBet()))>0) { // Bonus win!
             feedbackMessage.setText("+ "+win+"\n+ "+bonusPay);
             float ow= feedbackBonus.getWidth();
             float oh= feedbackBonus.getHeight();
             feedbackBonus.addAction(sequence(fadeIn(0.1f),delay(1),fadeOut(0.1f),sizeTo(ow,oh)));
             player.win(win+bonusPay);
           }
-          else {
+          else { // Plain win, no bonus
             feedbackMessage.setText("+ "+win);
             player.win(win);
           }
-          float centerPos = stage.getWidth()/2-(feedbackMessage.getWidth()+10+feedbackSymbol.getWidth())/2;
-          feedbackGroup.addAction(sequence(moveTo(centerPos,85),fadeIn(0.4f),moveBy(0,-50,1f),fadeOut(0.4f)));
-          playSoundEffect(WINSOUND);
         }
+        float centerPos = stage.getWidth()/2-(feedbackMessage.getWidth()+10+feedbackSymbol.getWidth())/2;
+        feedbackGroup.addAction(sequence(moveTo(centerPos,85),fadeIn(0.4f),moveBy(0,-50,1f),fadeOut(0.4f)));
+        playSoundEffect(WINSOUND);
       }
-      else {
-        // Player lost the round
+      else { // Player lost this round
         player.loose();
       }
       
