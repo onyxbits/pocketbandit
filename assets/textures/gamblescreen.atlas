@@ -17,70 +17,70 @@ spr_background
   orig: 144, 144
   offset: 0, 0
   index: -1
-bar
+spr_knob
   rotate: false
   xy: 1, 19
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-bell
+sym_bar
   rotate: false
   xy: 287, 289
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-cherry
+sym_bell
   rotate: false
   xy: 433, 435
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-grapes
+sym_cherry
   rotate: false
   xy: 67, 19
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-lemon
+sym_grapes
   rotate: false
   xy: 287, 223
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-mellon
+sym_lemon
   rotate: false
   xy: 353, 289
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-orange
+sym_mellon
   rotate: false
   xy: 433, 369
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-plum
+sym_orange
   rotate: false
   xy: 133, 19
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-seven
+sym_plum
   rotate: false
   xy: 287, 157
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-spr_knob
+sym_seven
   rotate: false
   xy: 353, 223
   size: 64, 64
@@ -216,6 +216,69 @@ spr_feedbackcoins
 spr_turns
   rotate: false
   xy: 355, 71
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sym_small_bar
+  rotate: false
+  xy: 351, 37
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sym_small_bell
+  rotate: false
+  xy: 351, 3
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sym_small_cherry
+  rotate: false
+  xy: 405, 87
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sym_small_grapes
+  rotate: false
+  xy: 419, 321
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sym_small_lemon
+  rotate: false
+  xy: 419, 287
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sym_small_mellon
+  rotate: false
+  xy: 419, 253
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sym_small_orange
+  rotate: false
+  xy: 453, 335
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sym_small_plum
+  rotate: false
+  xy: 453, 301
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sym_small_seven
+  rotate: false
+  xy: 453, 267
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

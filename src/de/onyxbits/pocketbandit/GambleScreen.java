@@ -220,10 +220,8 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
     }
     
     for(int i=0;i<symbols.length;i++) {
-      symbols[i]=new TextureRegionDrawable(new TextureRegion(localAtlas.findRegion(variation.symbolNames[i])));
-      smallSymbols[i]=new TextureRegionDrawable(new TextureRegion(localAtlas.findRegion(variation.symbolNames[i])));
-      smallSymbols[i].setMinWidth(symbols[i].getMinWidth()/2);
-      smallSymbols[i].setMinHeight(symbols[i].getMinHeight()/2);
+      symbols[i]=new TextureRegionDrawable(new TextureRegion(localAtlas.findRegion("sym_"+variation.symbolNames[i])));
+      smallSymbols[i]=new TextureRegionDrawable(new TextureRegion(localAtlas.findRegion("sym_small_"+variation.symbolNames[i])));
     }
 
     Image frontPanel = new Image(new TextureRegionDrawable(localAtlas.findRegion("spr_frontpanel")));
