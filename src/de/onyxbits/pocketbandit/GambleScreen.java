@@ -379,6 +379,8 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
    */
   private void setVariant(Variation variant) {
     Table paytable = new Table(((SlotMachine)game).skin);
+    TextureAtlas localAtlas= game.assetManager.get("textures/gamblescreen.atlas",TextureAtlas.class);
+    TextureRegion coin = new TextureRegion(localAtlas.findRegion("spr_small_cash"));
     for (int x=0;x<variant.paytable.length;x++) {
       for (int y=0;y<variant.paytable[x].length-1;y++) {
         if (variant.paytable[x][y]==-1) {
@@ -386,17 +388,12 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
           paytable.add().pad(2,2,2,2);
         }
         else {
-          Actor actor = new Image(smallSymbols[variant.paytable[x][y]]);
-          paytable.add(actor).pad(2,2,8,2);
+          paytable.add(new Image(smallSymbols[variant.paytable[x][y]])).pad(2,2,8,2);
         }
       }
-      paytable.add(" = ");
-      if (variant.paytable[x][3]==1) {
-        paytable.add(variant.paytable[x][3]+" coin ").right();
-      }
-      else {
-        paytable.add(variant.paytable[x][3]+" coins").right();
-      }
+      paytable.add("=").padLeft(15).padRight(10);
+      paytable.add(""+variant.paytable[x][3]).right();
+      paytable.add(new Image(coin)).padLeft(4);
       paytable.row();
     }
     
@@ -408,21 +405,20 @@ public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> impleme
       paytable.add("- - - - - - - - - - - - - - - - -").colspan(5).center();
       paytable.row();
       paytable.add("Lucky Bonus").colspan(4).left();
-      if (variant.luckyCoinBonus !=1) {
-        paytable.add(variant.luckyCoinBonus+" coins").right();
-      }
-      else {
-        paytable.add(variant.luckyCoinBonus+" coin ").right();
-      }
+      paytable.add(""+variant.luckyCoinBonus).right();
+      paytable.add(new Image(coin)).padLeft(4);
       paytable.row();
       paytable.add("Seed capital").colspan(4).left();
-      paytable.add(variant.seedCapital+" coins").right();
+      paytable.add(""+variant.seedCapital).right();
+      paytable.add(new Image(coin)).padLeft(4);
       paytable.row();
       paytable.add("On hand").colspan(4).left();
-      paytable.add(tmp.credit+" coins").right();
+      paytable.add(""+tmp.credit).right();
+      paytable.add(new Image(coin)).padLeft(4);
       paytable.row();
       paytable.add("Highscore").colspan(4).left();
-      paytable.add(tmp.highscore+" coins").right();
+      paytable.add(""+tmp.highscore).right();
+      paytable.add(new Image(coin)).padLeft(4);
     }
     
     paytable.pack();
