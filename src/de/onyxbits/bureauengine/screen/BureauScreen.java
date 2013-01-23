@@ -78,10 +78,6 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   
   @Override
   public void dispose() {
-    game.muteManager.removeMuteListener(this);
-    if (Gdx.input.getInputProcessor()==stage) {
-      Gdx.input.setInputProcessor(null);
-    }
     if (stage!=null) stage.dispose();
     AssetDescriptor ad[] = getAssets();
     for (AssetDescriptor tmp: ad) { 
@@ -104,6 +100,10 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   
   @Override
   public void hide() {
+    game.muteManager.removeMuteListener(this);
+    if (Gdx.input.getInputProcessor()==stage) {
+      Gdx.input.setInputProcessor(null);
+    }
   }
   
   @Override
