@@ -185,11 +185,11 @@ public class FadeOverScreen implements Screen {
    */
   private void dynamicTextures() {
     if (blankTexture!=null) blankTexture.dispose();
-     Pixmap pix = new Pixmap(2, 2, Format.RGBA8888);
-     pix.setColor(Color.BLACK);
-     pix.fill();
-     blankTexture=new Texture(pix);
-     pix.dispose();
+    Pixmap pix = new Pixmap(2, 2, Format.RGBA8888);
+    pix.setColor(Color.BLACK);
+    pix.fill();
+    blankTexture=new Texture(pix);
+    pix.dispose();
   }
   
   @Override
