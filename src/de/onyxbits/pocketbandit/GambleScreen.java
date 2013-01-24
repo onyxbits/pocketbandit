@@ -20,7 +20,7 @@ import de.onyxbits.bureauengine.screen.*;
 /**
  * Represents the actual game screen. This class also doubles as the config screen.
  */
-public class GambleScreen<T extends SlotMachine> extends BureauScreen<T> implements EventListener {
+public class GambleScreen<T extends SlotMachine> extends StageScreen<T> implements EventListener {
 
   /**
    * 3x3 symbols packed into a single array. First reel goes from 0 to 2, second from 3 to 5 and

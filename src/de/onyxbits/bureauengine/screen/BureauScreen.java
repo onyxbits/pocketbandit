@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -20,16 +19,8 @@ import de.onyxbits.bureauengine.audio.MuteListener;
  * have a large amount of assets (music, textures, sfx) bound to them. Their purpose is
  * to break the game down into seperate working sets of "art units", so large games
  * can be written without the need to hold all assets in memory at all time.
- * <p>
- * <code>BureauScreen</code>S are not meant to be recycled. Once they are hidden, they
- * must not be shown again.
  */
 public abstract class BureauScreen<T extends BureauGame> implements Screen, MuteListener {
-  
-  /**
-   * <code>Stage</code> of this screen. Will be rendered automatically.
-   */
-  protected Stage stage;
   
   /**
    * Reference to the game object.
@@ -78,7 +69,6 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   
   @Override
   public void dispose() {
-    if (stage!=null) stage.dispose();
     AssetDescriptor ad[] = getAssets();
     for (AssetDescriptor tmp: ad) { 
       game.assetManager.unload(tmp.fileName);
@@ -91,7 +81,6 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
    */
   @Override
   public void show() {
-    Gdx.input.setInputProcessor(stage);
     game.muteManager.addMuteListener(this);
     if (music!=null && !game.muteManager.isMusicMuted()) {
       music.play();
@@ -101,9 +90,6 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   @Override
   public void hide() {
     game.muteManager.removeMuteListener(this);
-    if (Gdx.input.getInputProcessor()==stage) {
-      Gdx.input.setInputProcessor(null);
-    }
   }
   
   @Override
@@ -152,8 +138,6 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   @Override
   public void render(float delta) {
     renderBackground(delta);
-    stage.act(delta);
-    stage.draw();
   }
   
   /**

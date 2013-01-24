@@ -22,7 +22,7 @@ import de.onyxbits.bureauengine.util.*;
 /**
  * Shown on startup. The user may start a new game here, see the credits, change settings. etc.
  */
-public class MenuScreen<T extends SlotMachine> extends BureauScreen<T> implements EventListener {
+public class MenuScreen<T extends SlotMachine> extends StageScreen<T> implements EventListener {
   
   private Button startGame;
   private Button showCredits;
