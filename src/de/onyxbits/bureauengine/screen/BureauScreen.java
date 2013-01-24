@@ -44,8 +44,8 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   
   /**
    * Instantiate a new screen. Note: instantiation must usually happen fast and on the
-   * UI thread (e.g. whne the player hits an "exit" button). Put all your real construction
-   * work in the <code>readyScreen()</code> method.
+   * UI thread (e.g. when the player hits an "exit" button). Put all your real construction
+   * work in the {@link #readyScreen} method.
    * @param game callback reference to the main game object
    */
   public BureauScreen(T game) {
@@ -157,11 +157,9 @@ public abstract class BureauScreen<T extends BureauGame> implements Screen, Mute
   }
   
   /**
-   * Actually construct the screen object. Subclasses should override this method.
-   * The default implementation just constructs a <code>Stage</code>.
+   * Called before the screen is shown. This is the method to actually construct the screen
+   * in. 
    */
-  public void readyScreen() {
-    this.stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false,game.spriteBatch);
-  }
+  public abstract void readyScreen();
   
 }
